@@ -74,6 +74,28 @@ body {
 .tag.green { border-color: var(--success); color: var(--success); background: rgba(30,122,74,.05); }
 .tag.brown { border-color: var(--accent2); color: var(--accent2); background: rgba(139,69,19,.05); }
 
+/* ── UNIQUE NUMBER BADGE ── */
+.unique-num-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--accent);
+  background: linear-gradient(135deg, rgba(26,58,92,.08) 0%, rgba(200,162,52,.08) 100%);
+  border: 1.5px solid var(--accent);
+  border-radius: 4px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+.unique-num-badge::before {
+  content: '№';
+  font-size: 9px;
+  opacity: .6;
+}
+
 /* ── HEADER ── */
 #site-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -347,6 +369,12 @@ body {
   padding: 10px 14px; border-radius: 6px; outline: none; transition: border-color .2s;
 }
 .form-control:focus { border-color: var(--accent); }
+.form-control:disabled {
+  background: var(--surface);
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 .form-control option { background: var(--bg); }
 textarea.form-control { resize: vertical; min-height: 80px; }
 .btn {
@@ -627,6 +655,13 @@ footer p { font-size: 12px; }
         <div class="cms-panel">
           <h3 id="a-form-title">Добавить достижение</h3>
           <input type="hidden" id="a-edit-id">
+          
+          <!-- Поле уникального номера (только для редактирования) -->
+          <div class="form-group hidden" id="a-num-group">
+            <label>Уникальный номер <span style="color:var(--gold);font-size:9px">(присваивается автоматически)</span></label>
+            <input class="form-control" id="a-unique-num" disabled>
+          </div>
+          
           <div class="form-row">
             <div class="form-group">
               <label>Кафедра</label>
@@ -688,7 +723,7 @@ footer p { font-size: 12px; }
         <div class="table-wrap">
           <table>
             <thead><tr>
-              <th>Год</th><th>Кафедра</th><th>Тип</th>
+              <th>Номер</th><th>Год</th><th>Кафедра</th><th>Тип</th>
               <th>Заголовок</th><th>Автор</th><th>Действия</th>
             </tr></thead>
             <tbody id="a-tbody"></tbody>
@@ -899,6 +934,7 @@ function achievCard(a) {
   const tc = TYPE_CLASS[a.type] || '';
   return `<div class="card">
     <div class="card-meta">
+      ${a.unique_number ? `<span class="unique-num-badge">${esc(a.unique_number)}</span>` : ''}
       <span class="card-year">${esc(a.year)}</span>
       <span class="tag ${tc}">${esc(a.type)}</span>
       <span class="tag">${DEPT_SHORT[a.dept] || a.dept}</span>
@@ -1037,6 +1073,7 @@ function renderAchieveTable() {
   const tbody = document.getElementById('a-tbody');
   tbody.innerHTML = achievements.length
     ? achievements.map(a => `<tr>
+        <td><span class="unique-num-badge">${esc(a.unique_number || '—')}</span></td>
         <td class="mono" style="color:var(--muted);white-space:nowrap">${esc(a.year)}</td>
         <td><span class="tag">${DEPT_SHORT[a.dept]||a.dept}</span></td>
         <td><span class="tag ${TYPE_CLASS[a.type]||''}">${esc(a.type)}</span></td>
@@ -1047,7 +1084,7 @@ function renderAchieveTable() {
           <button class="btn btn-danger btn-sm" onclick="deleteAch(${a.id})">🗑</button>
         </div></td>
       </tr>`).join('')
-    : `<tr><td colspan="6">${emptyState('Нет записей')}</td></tr>`;
+    : `<tr><td colspan="7">${emptyState('Нет записей')}</td></tr>`;
 }
 
 async function saveAchievement() {
@@ -1065,11 +1102,13 @@ async function saveAchievement() {
   const editId = document.getElementById('a-edit-id').value;
   let err;
   if (editId) {
+    // При редактировании НЕ отправляем unique_number - он не должен меняться
     ({ error: err } = await sb.from('achievements').update(obj).eq('id', editId));
   } else {
+    // При создании unique_number будет создан автоматически через триггер
     ({ error: err } = await sb.from('achievements').insert(obj));
   }
-  if (err) { showA('a-err'); return; }
+  if (err) { showA('a-err'); console.error(err); return; }
   cancelEdit();
   showA('a-ok');
   // realtime will refresh automatically
@@ -1087,6 +1126,13 @@ function editAch(id) {
   document.getElementById('a-year').value = a.year;
   document.getElementById('a-sup').value = a.supervisor || '';
   document.getElementById('a-link').value = a.link || '';
+  
+  // Показываем поле с уникальным номером
+  if (a.unique_number) {
+    document.getElementById('a-unique-num').value = a.unique_number;
+    document.getElementById('a-num-group').classList.remove('hidden');
+  }
+  
   document.getElementById('a-form-title').textContent = 'Редактировать достижение';
   document.querySelector('.cms-panel').scrollIntoView({ behavior: 'smooth' });
 }
@@ -1098,10 +1144,13 @@ async function deleteAch(id) {
 
 function cancelEdit() {
   document.getElementById('a-edit-id').value = '';
-  ['a-title','a-desc','a-author','a-year','a-sup','a-link'].forEach(id => { document.getElementById(id).value = ''; });
+  ['a-title','a-desc','a-author','a-year','a-sup','a-link','a-unique-num'].forEach(id => { 
+    document.getElementById(id).value = ''; 
+  });
   document.getElementById('a-dept').value = 'epp';
   document.getElementById('a-type').value = 'Конференция';
   document.getElementById('a-form-title').textContent = 'Добавить достижение';
+  document.getElementById('a-num-group').classList.add('hidden');
 }
 
 // ── Dept Info CMS ──
