@@ -200,6 +200,280 @@ body {
 }
 .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-family: var(--mono); letter-spacing: .05em; }
 
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(28, 26, 22, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+/* ── SEARCH BAR ── */
+.search-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 32px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+}
+.search-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent2);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.search-controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+.search-input-group {
+  display: flex;
+  gap: 12px;
+}
+.search-input {
+  flex: 1;
+  font-family: var(--sans);
+  font-size: 14px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.2s;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--card);
+}
+.search-input::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+.search-select {
+  min-width: 180px;
+  font-family: var(--sans);
+  font-size: 14px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.search-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--card);
+}
+.search-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 12px 24px;
+  border: 1.5px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.search-btn:hover {
+  background: transparent;
+  color: var(--accent);
+}
+.search-btn.reset {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--border);
+}
+.search-btn.reset:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.search-results-info {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-results-count {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(28, 26, 22, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+.modal-overlay.active {
+  display: flex;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.modal-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.modal-header {
+  padding: 32px 40px 24px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--muted);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.modal-close:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.modal-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.modal-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.3;
+  margin-bottom: 16px;
+  padding-right: 40px;
+}
+.modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.modal-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.modal-meta-label {
+  color: var(--muted);
+  opacity: 0.7;
+}
+.modal-body {
+  padding: 32px 40px;
+}
+.modal-section {
+  margin-bottom: 28px;
+}
+.modal-section:last-child {
+  margin-bottom: 0;
+}
+.modal-section-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent2);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.modal-section-content {
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+}
+.modal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 10px 16px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  transition: all 0.2s;
+  background: rgba(26, 58, 92, 0.03);
+}
+.modal-link:hover {
+  background: rgba(26, 58, 92, 0.08);
+  transform: translateX(2px);
+}
+.modal-link::after {
+  content: '→';
+  font-size: 16px;
+}
+
 /* ── SECTIONS ── */
 .section { padding: 56px 60px; }
 .section-header {
@@ -219,6 +493,8 @@ body {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 8px; padding: 24px; transition: all .25s;
   box-shadow: var(--shadow); position: relative; overflow: hidden;
+  cursor: pointer;
+  user-select: none;
 }
 .card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -524,6 +800,26 @@ footer p { font-size: 12px; }
   .cms-main { padding: 24px 16px; }
   #site-header { padding: 0 16px; }
   .nav-btn { font-size: 10px; padding: 5px 8px; }
+  
+  /* Search responsive */
+  .search-section { padding: 20px; }
+  .search-controls { grid-template-columns: 1fr; gap: 12px; }
+  .search-input-group { 
+    flex-direction: column;
+    gap: 10px;
+  }
+  .search-select { min-width: auto; width: 100%; }
+  .search-btn { width: 100%; }
+  
+  /* Modal responsive */
+  .modal-overlay { padding: 10px; }
+  .modal-content { max-height: 95vh; }
+  .modal-header { padding: 24px 20px 20px; }
+  .modal-body { padding: 24px 20px; }
+  .modal-title { font-size: 22px; padding-right: 35px; }
+  .modal-close { top: 16px; right: 16px; width: 28px; height: 28px; font-size: 20px; }
+  .modal-meta { gap: 12px; font-size: 12px; }
+  .modal-section-content { font-size: 14px; }
 }
 </style>
 </head>
@@ -579,6 +875,19 @@ footer p { font-size: 12px; }
   </div>
 </div>
 
+<!-- ══════════ ACHIEVEMENT MODAL ══════════ -->
+<div class="modal-overlay" id="achievement-modal" onclick="closeAchievementModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeAchievementModal()">&times;</button>
+      <div class="modal-tags" id="modal-tags"></div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-meta" id="modal-meta"></div>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
 <!-- ══════════ HOME ══════════ -->
 <div class="page active" id="page-home">
   <div class="hero">
@@ -611,8 +920,46 @@ footer p { font-size: 12px; }
   </div>
 
   <div class="section" style="padding-top:0">
+    <div class="search-section">
+      <div class="search-title">🔍 Поиск достижений</div>
+      <div class="search-controls">
+        <div class="search-input-group">
+          <input 
+            type="text" 
+            class="search-input" 
+            id="search-query" 
+            placeholder="Номер, фамилия автора, название работы..."
+            onkeypress="if(event.key==='Enter') performSearch()"
+          >
+          <select class="search-select" id="search-type">
+            <option value="">Все типы</option>
+            <option value="Конференция">Конференция</option>
+            <option value="Публикация">Публикация</option>
+            <option value="Диплом">Диплом</option>
+            <option value="СНИЛ">СНИЛ</option>
+            <option value="Грант">Грант</option>
+            <option value="Иное">Иное</option>
+          </select>
+          <select class="search-select" id="search-dept">
+            <option value="">Все кафедры</option>
+            <option value="epp">ЭПП</option>
+            <option value="apk">АПКиП</option>
+            <option value="ou">ОиУ</option>
+            <option value="negu">НЭиГУ</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="search-btn" onclick="performSearch()">Найти</button>
+          <button class="search-btn reset" onclick="resetSearch()">Сбросить</button>
+        </div>
+      </div>
+      <div class="search-results-info hidden" id="search-results-info">
+        Найдено: <span class="search-results-count" id="search-results-count">0</span> достижений
+      </div>
+    </div>
+    
     <div class="section-header">
-      <h2>Последние добавленные достижения</h2>
+      <h2 id="achievements-section-title">Последние добавленные достижения</h2>
       <span class="count" id="home-ach-count">0</span>
     </div>
     <div class="cards-grid" id="home-cards"></div>
@@ -898,9 +1245,94 @@ function nav(page, deptKey) {
 }
 
 // ═══════════════════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════════════════
+let searchActive = false;
+let searchResults = [];
+
+function performSearch() {
+  const query = document.getElementById('search-query').value.trim().toLowerCase();
+  const type = document.getElementById('search-type').value;
+  const dept = document.getElementById('search-dept').value;
+  
+  // Если все поля пусты, показываем все достижения
+  if (!query && !type && !dept) {
+    resetSearch();
+    return;
+  }
+  
+  searchActive = true;
+  searchResults = achievements.filter(a => {
+    let match = true;
+    
+    // Поиск по тексту (номер, фамилия, название)
+    if (query) {
+      const searchText = `${a.unique_number || ''} ${a.author} ${a.title} ${a.description}`.toLowerCase();
+      match = match && searchText.includes(query);
+    }
+    
+    // Фильтр по типу
+    if (type) {
+      match = match && a.type === type;
+    }
+    
+    // Фильтр по кафедре
+    if (dept) {
+      match = match && a.dept === dept;
+    }
+    
+    return match;
+  });
+  
+  // Обновляем отображение
+  renderSearchResults();
+}
+
+function resetSearch() {
+  searchActive = false;
+  searchResults = [];
+  document.getElementById('search-query').value = '';
+  document.getElementById('search-type').value = '';
+  document.getElementById('search-dept').value = '';
+  document.getElementById('search-results-info').classList.add('hidden');
+  renderHome();
+}
+
+function renderSearchResults() {
+  const container = document.getElementById('home-cards');
+  const countEl = document.getElementById('home-ach-count');
+  const titleEl = document.getElementById('achievements-section-title');
+  const infoEl = document.getElementById('search-results-info');
+  const infoCountEl = document.getElementById('search-results-count');
+  
+  // Показываем информацию о результатах
+  infoEl.classList.remove('hidden');
+  infoCountEl.textContent = searchResults.length;
+  
+  // Обновляем заголовок и счетчик
+  titleEl.textContent = 'Результаты поиска';
+  countEl.textContent = searchResults.length;
+  
+  // Рендерим карточки
+  container.innerHTML = searchResults.length
+    ? searchResults.map(achievCard).join('')
+    : `<div class="empty-state" style="grid-column:1/-1">
+        <div class="icon">🔍</div>
+        <p>По вашему запросу ничего не найдено</p>
+        <button class="search-btn reset" onclick="resetSearch()" style="margin-top: 16px;">Сбросить фильтры</button>
+      </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
 // RENDER HOME
 // ═══════════════════════════════════════════════════════
 function renderHome() {
+  // Если активен поиск, показываем результаты поиска
+  if (searchActive) {
+    renderSearchResults();
+    return;
+  }
+  
   document.getElementById('stat-total').textContent = achievements.length;
   const years = achievements.map(a => parseInt(a.year)).filter(Boolean);
   document.getElementById('stat-year').textContent = years.length ? Math.max(...years) : '—';
@@ -924,7 +1356,10 @@ function renderHome() {
   // Recent achievements
   const recent = achievements.slice(0, 4);
   const container = document.getElementById('home-cards');
+  const titleEl = document.getElementById('achievements-section-title');
+  titleEl.textContent = 'Последние добавленные достижения';
   document.getElementById('home-ach-count').textContent = achievements.length;
+  document.getElementById('search-results-info').classList.add('hidden');
   container.innerHTML = recent.length
     ? recent.map(achievCard).join('')
     : `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔬</div><p>Достижения появятся здесь после добавления</p></div>`;
@@ -932,7 +1367,7 @@ function renderHome() {
 
 function achievCard(a) {
   const tc = TYPE_CLASS[a.type] || '';
-  return `<div class="card">
+  return `<div class="card" onclick="openAchievementModal(${a.id})">
     <div class="card-meta">
       ${a.unique_number ? `<span class="unique-num-badge">${esc(a.unique_number)}</span>` : ''}
       <span class="card-year">${esc(a.year)}</span>
@@ -945,7 +1380,7 @@ function achievCard(a) {
       <div class="card-author">${esc(a.author)}</div>
       ${a.supervisor ? `<div class="card-supervisor">Рук.: ${esc(a.supervisor)}</div>` : ''}
     </div>
-    ${a.link ? `<a class="card-link" href="${esc(a.link)}" target="_blank" rel="noopener">↗ Открыть вложение</a>` : ''}
+    ${a.link ? `<a class="card-link" href="${esc(a.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ Открыть вложение</a>` : ''}
   </div>`;
 }
 
@@ -1141,6 +1576,104 @@ async function deleteAch(id) {
   if (!confirm('Удалить достижение?')) return;
   await sb.from('achievements').delete().eq('id', id);
 }
+
+// ═══════════════════════════════════════════════════════
+// ACHIEVEMENT MODAL
+// ═══════════════════════════════════════════════════════
+function openAchievementModal(id) {
+  const achievement = achievements.find(a => a.id === id);
+  if (!achievement) return;
+  
+  const modal = document.getElementById('achievement-modal');
+  const tc = TYPE_CLASS[achievement.type] || '';
+  
+  // Заполняем теги
+  document.getElementById('modal-tags').innerHTML = `
+    ${achievement.unique_number ? `<span class="unique-num-badge">${esc(achievement.unique_number)}</span>` : ''}
+    <span class="tag ${tc}">${esc(achievement.type)}</span>
+    <span class="tag">${DEPT_SHORT[achievement.dept] || achievement.dept}</span>
+  `;
+  
+  // Заголовок
+  document.getElementById('modal-title').textContent = achievement.title;
+  
+  // Мета информация
+  document.getElementById('modal-meta').innerHTML = `
+    <div class="modal-meta-item">
+      <span class="modal-meta-label">Год:</span>
+      <span>${esc(achievement.year)}</span>
+    </div>
+    <div class="modal-meta-item">
+      <span class="modal-meta-label">Кафедра:</span>
+      <span>${DEPT_NAMES[achievement.dept] || achievement.dept}</span>
+    </div>
+  `;
+  
+  // Тело модального окна
+  let bodyHTML = '';
+  
+  if (achievement.description) {
+    bodyHTML += `
+      <div class="modal-section">
+        <div class="modal-section-title">Описание</div>
+        <div class="modal-section-content">${esc(achievement.description)}</div>
+      </div>
+    `;
+  }
+  
+  if (achievement.author) {
+    bodyHTML += `
+      <div class="modal-section">
+        <div class="modal-section-title">Автор</div>
+        <div class="modal-section-content">${esc(achievement.author)}</div>
+      </div>
+    `;
+  }
+  
+  if (achievement.supervisor) {
+    bodyHTML += `
+      <div class="modal-section">
+        <div class="modal-section-title">Научный руководитель</div>
+        <div class="modal-section-content">${esc(achievement.supervisor)}</div>
+      </div>
+    `;
+  }
+  
+  if (achievement.link) {
+    bodyHTML += `
+      <div class="modal-section">
+        <div class="modal-section-title">Материалы</div>
+        <a class="modal-link" href="${esc(achievement.link)}" target="_blank" rel="noopener">
+          Открыть вложение
+        </a>
+      </div>
+    `;
+  }
+  
+  document.getElementById('modal-body').innerHTML = bodyHTML;
+  
+  // Показываем модальное окно
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAchievementModal(event) {
+  // Закрываем только при клике на overlay или кнопку закрытия
+  if (event && event.target !== event.currentTarget && !event.target.classList.contains('modal-close')) {
+    return;
+  }
+  
+  const modal = document.getElementById('achievement-modal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Закрытие модального окна по нажатию Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeAchievementModal();
+  }
+});
 
 function cancelEdit() {
   document.getElementById('a-edit-id').value = '';
