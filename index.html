@@ -2,38 +2,38 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Реестр научных достижений студентов — ФЭиМ БГЭУ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#003366">
+<meta name="description" content="Реестр научных достижений студентов ФЭМ БГЭУ">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Реестр научных достижений — ФЭМ БГЭУ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-
-<script>
-const SUPABASE_URL = 'https://uwswqesvzfacwqvmmvct.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3c3dxZXN2emZhY3dxdm1tdmN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NDAzMDIsImV4cCI6MjA4OTQxNjMwMn0.DnovJ0i6dhzEzFtp-uRhecAGVtYenIE4kohGcLhMVGo';
-</script>
-
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 :root {
-  --bg: #f5f2eb;
-  --surface: #edeae0;
-  --card: #ffffff;
-  --border: #d8d3c6;
-  --border2: #c5bfb0;
-  --accent: #1a3a5c;
-  --accent2: #8b4513;
-  --gold: #c8a234;
-  --text: #1c1a16;
-  --muted: #7a7265;
-  --danger: #c0392b;
-  --success: #1e7a4a;
-  --mono: 'IBM Plex Mono', monospace;
-  --serif: 'Playfair Display', serif;
-  --sans: 'IBM Plex Sans', sans-serif;
-  --shadow: 0 2px 12px rgba(26,58,92,.08);
-  --shadow-lg: 0 8px 32px rgba(26,58,92,.12);
+  --primary: #003366;
+  --primary-dark: #001a33;
+  --primary-light: #004d99;
+  --accent: #d32f2f;
+  --accent-light: #e53935;
+  --accent-pale: #ffebee;
+  --bg: #fafbfc;
+  --surface: #ffffff;
+  --border: #e0e6ed;
+  --text: #1a1f2e;
+  --text-light: #5a6370;
+  --text-lighter: #8a92a0;
+  --shadow: 0 2px 8px rgba(0, 51, 102, 0.08);
+  --shadow-md: 0 8px 24px rgba(0, 51, 102, 0.12);
+  --shadow-lg: 0 16px 40px rgba(0, 51, 102, 0.15);
+  --font-serif: 'Lora', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius: 6px;
+  --radius-lg: 12px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,382 +41,703 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.6;
   min-height: 100vh;
 }
 
 .hidden { display: none !important; }
-.mono { font-family: var(--mono); }
-.tag {
-  display: inline-block; font-family: var(--mono); font-size: 10px;
-  padding: 2px 8px; border-radius: 2px; border: 1px solid var(--border2);
-  color: var(--muted); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap;
-}
-.tag.gold { border-color: var(--gold); color: var(--gold); background: rgba(200,162,52,.06); }
-.tag.blue { border-color: var(--accent); color: var(--accent); background: rgba(26,58,92,.05); }
-.tag.green { border-color: var(--success); color: var(--success); background: rgba(30,122,74,.05); }
-.tag.brown { border-color: var(--accent2); color: var(--accent2); background: rgba(139,69,19,.05); }
 
-.unique-num-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--mono); font-size: 11px; font-weight: 500;
-  letter-spacing: .06em; color: var(--accent);
-  background: linear-gradient(135deg, rgba(26,58,92,.08) 0%, rgba(200,162,52,.08) 100%);
-  border: 1.5px solid var(--accent); border-radius: 4px;
-  padding: 4px 10px; white-space: nowrap;
-}
-.unique-num-badge::before { content: '№'; font-size: 9px; opacity: .6; }
-
+/* ===== HEADER ===== */
 #site-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(245,242,235,.96); backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
+  background: var(--surface); border-bottom: 2px solid var(--primary);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px; height: 60px;
-  box-shadow: 0 1px 0 var(--border), var(--shadow);
+  padding: 0 32px; height: 72px;
+  box-shadow: var(--shadow-md);
 }
-.header-brand { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+
+.header-brand {
+  display: flex; align-items: center; gap: 16px;
+  cursor: pointer; user-select: none; flex-shrink: 0;
+}
+
 .brand-logo {
-  width: 32px; height: 32px; border: 1.5px solid var(--accent);
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  border-radius: var(--radius-lg);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-size: 10px; color: var(--accent); font-weight: 500; flex-shrink: 0;
+  color: white; font-weight: 700; font-size: 16px;
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-serif);
 }
-.brand-text { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .04em; }
-.brand-text span { color: var(--muted); }
-.header-nav { display: flex; gap: 2px; align-items: center; }
+
+.brand-text {
+  display: flex; flex-direction: column;
+  font-weight: 700; font-size: 14px; color: var(--primary);
+}
+
+.brand-text span { font-size: 11px; font-weight: 500; color: var(--accent); }
+
+.header-nav {
+  display: flex; gap: 6px; align-items: center;
+}
+
 .nav-btn {
   background: none; border: none; cursor: pointer;
-  font-family: var(--mono); font-size: 11px; letter-spacing: .05em;
-  color: var(--muted); padding: 6px 12px; border-radius: 4px;
-  transition: all .2s; text-transform: uppercase;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+  color: var(--text-light); padding: 10px 14px;
+  border-radius: var(--radius); transition: all 0.3s;
+  position: relative; white-space: nowrap;
 }
-.nav-btn:hover { color: var(--accent); background: rgba(26,58,92,.06); }
-.nav-btn.active { color: var(--accent); background: rgba(26,58,92,.08); font-weight: 500; }
-.nav-sep { width: 1px; height: 20px; background: var(--border); margin: 0 6px; }
-.nav-btn.cms-btn { color: var(--accent2); border: 1px solid rgba(139,69,19,.3); }
-.nav-btn.cms-btn:hover { background: rgba(139,69,19,.08); }
 
-.page { display: none; padding-top: 60px; min-height: 100vh; }
-.page.active { display: block; }
-
-#rt-badge {
-  position: fixed; bottom: 24px; right: 24px; z-index: 90;
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 20px; padding: 6px 14px 6px 10px;
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 11px; color: var(--muted);
-  box-shadow: var(--shadow); transition: all .3s;
+.nav-btn:hover {
+  color: var(--primary);
+  background: linear-gradient(180deg, rgba(0,51,102,0.04), rgba(0,51,102,0.02));
 }
-.rt-dot { width: 8px; height: 8px; border-radius: 50%; background: #aaa; transition: background .3s; }
-.rt-dot.live { background: var(--success); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
 
+.nav-btn.active {
+  color: white;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  box-shadow: var(--shadow);
+}
+
+.nav-sep { width: 1px; height: 28px; background: var(--border); margin: 0 6px; opacity: 0.5; }
+
+/* ── Burger button ── */
+.burger {
+  display: none; flex-direction: column; justify-content: center;
+  gap: 5px; width: 36px; height: 36px; padding: 4px;
+  background: none; border: none; cursor: pointer; border-radius: 6px;
+}
+.burger span {
+  display: block; height: 2px; width: 100%;
+  background: var(--primary); border-radius: 2px;
+  transition: all 0.25s;
+}
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile drawer ── */
+#mobile-nav {
+  display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 99;
+  background: var(--surface); border-bottom: 2px solid var(--primary);
+  box-shadow: var(--shadow-md); padding: 12px 16px 20px; flex-direction: column; gap: 4px;
+}
+#mobile-nav.open { display: flex; }
+#mobile-nav .nav-btn { text-align: left; width: 100%; padding: 12px 16px; font-size: 14px; }
+#mobile-nav .nav-sep { width: 100%; height: 1px; margin: 6px 0; }
+#mobile-nav .apply-mobile-btn {
+  margin-top: 8px; width: 100%;
+  background: var(--accent); color: white;
+  border: none; border-radius: var(--radius); cursor: pointer;
+  padding: 13px 16px; font-size: 14px; font-weight: 600;
+  font-family: var(--font-sans); text-align: left;
+}
+
+.install-btn {
+  background: var(--accent);
+  color: white; border: none; padding: 10px 16px;
+  border-radius: var(--radius); cursor: pointer; font-size: 12px;
+  font-weight: 600; transition: all 0.3s;
+  box-shadow: var(--shadow);
+}
+.install-btn:hover { background: var(--accent-light); transform: translateY(-1px); }
+
+/* ===== PAGES ===== */
+.page { display: none; padding-top: 72px; min-height: 100vh; }
+.page.active { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ===== HERO ===== */
 .hero {
   position: relative; overflow: hidden;
-  padding: 80px 60px 70px; border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, #f5f2eb 0%, #ede8dc 100%);
+  padding: 80px 32px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white; text-align: center;
+  border-bottom: 6px solid var(--accent);
 }
-.hero::after {
-  content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 45%;
-  background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(26,58,92,.025) 20px, rgba(26,58,92,.025) 21px);
-  pointer-events: none;
+
+.hero::before {
+  content: ''; position: absolute; top: -50%; right: -5%;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: rgba(211, 47, 47, 0.08); pointer-events: none;
 }
-.hero-eyebrow {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--accent2); margin-bottom: 16px;
-  display: flex; align-items: center; gap: 10px;
-}
-.hero-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent2); }
+
 .hero h1 {
-  font-family: var(--serif); font-size: clamp(32px, 4.5vw, 64px);
-  font-weight: 900; line-height: 1.06; max-width: 720px;
-  margin-bottom: 22px; color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 7vw, 52px);
+  font-weight: 700; line-height: 1.2; margin-bottom: 16px;
+  position: relative; z-index: 1;
 }
-.hero h1 em { font-style: italic; color: var(--accent2); }
-.hero-sub { color: var(--muted); font-size: 16px; max-width: 520px; margin-bottom: 44px; font-weight: 300; }
-.hero-stats { display: flex; gap: 0; flex-wrap: wrap; }
-.stat-item { padding: 20px 32px; border: 1px solid var(--border); border-right: none; background: var(--card); }
-.stat-item:first-child { border-radius: 6px 0 0 6px; }
-.stat-item:last-child { border-right: 1px solid var(--border); border-radius: 0 6px 6px 0; }
-.stat-num { font-family: var(--serif); font-size: 40px; font-weight: 700; color: var(--accent); line-height: 1; }
-.stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-family: var(--mono); letter-spacing: .05em; }
 
-.search-section {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 10px; padding: 24px 32px; margin-bottom: 32px; box-shadow: var(--shadow);
+.hero-sub {
+  font-size: 16px; opacity: 0.95; max-width: 700px;
+  margin: 0 auto 48px; font-weight: 400;
+  position: relative; z-index: 1;
 }
-.search-title { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent2); margin-bottom: 16px; font-weight: 500; }
-.search-controls { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; }
-.search-input-group { display: flex; gap: 12px; }
-.search-input {
-  flex: 1; font-family: var(--sans); font-size: 14px; padding: 12px 16px;
-  border: 1.5px solid var(--border); border-radius: 6px; background: var(--bg);
-  color: var(--text); transition: all 0.2s;
-}
-.search-input:focus { outline: none; border-color: var(--accent); background: var(--card); }
-.search-input::placeholder { color: var(--muted); opacity: 0.6; }
-.search-select {
-  min-width: 180px; font-family: var(--sans); font-size: 14px; padding: 12px 16px;
-  border: 1.5px solid var(--border); border-radius: 6px; background: var(--bg);
-  color: var(--text); cursor: pointer; transition: all 0.2s;
-}
-.search-select:focus { outline: none; border-color: var(--accent); background: var(--card); }
-.search-btn {
-  font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
-  padding: 12px 24px; border: 1.5px solid var(--accent); border-radius: 6px;
-  background: var(--accent); color: white; cursor: pointer; transition: all 0.2s; white-space: nowrap;
-}
-.search-btn:hover { background: transparent; color: var(--accent); }
-.search-btn.reset { background: transparent; color: var(--muted); border-color: var(--border); }
-.search-btn.reset:hover { color: var(--accent); border-color: var(--accent); }
-.search-results-info {
-  margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);
-  font-family: var(--mono); font-size: 12px; color: var(--muted);
-  display: flex; align-items: center; gap: 8px;
-}
-.search-results-count { color: var(--accent); font-weight: 500; }
 
-.modal-overlay {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(28,26,22,0.7); backdrop-filter: blur(4px);
-  z-index: 1000; display: none; align-items: center; justify-content: center;
-  padding: 20px; animation: fadeIn 0.2s ease;
+.hero-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px; max-width: 700px; margin: 0 auto;
+  position: relative; z-index: 1;
 }
-.modal-overlay.active { display: flex; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.modal-content {
-  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
-  max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto;
-  box-shadow: var(--shadow-lg); position: relative; animation: slideUp 0.3s ease;
-}
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.modal-header { padding: 32px 40px 24px; border-bottom: 1px solid var(--border); position: relative; }
-.modal-close {
-  position: absolute; top: 24px; right: 24px; background: none; border: none;
-  font-size: 24px; color: var(--muted); cursor: pointer; width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: all 0.2s;
-}
-.modal-close:hover { background: var(--surface); color: var(--text); }
-.modal-tags { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-.modal-title { font-family: var(--serif); font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1.3; margin-bottom: 16px; padding-right: 40px; }
-.modal-meta { display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: var(--muted); font-family: var(--mono); }
-.modal-meta-item { display: flex; align-items: center; gap: 6px; }
-.modal-meta-label { color: var(--muted); opacity: 0.7; }
-.modal-body { padding: 32px 40px; }
-.modal-section { margin-bottom: 28px; }
-.modal-section:last-child { margin-bottom: 0; }
-.modal-section-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent2); margin-bottom: 12px; font-weight: 500; }
-.modal-section-content { color: var(--text); line-height: 1.7; font-size: 15px; }
-.modal-link {
-  display: inline-flex; align-items: center; gap: 8px; color: var(--accent);
-  text-decoration: none; font-family: var(--mono); font-size: 13px; padding: 10px 16px;
-  border: 1px solid var(--accent); border-radius: 4px; transition: all 0.2s;
-  background: rgba(26,58,92,.03);
-}
-.modal-link:hover { background: rgba(26,58,92,.08); transform: translateX(2px); }
-.modal-link::after { content: '→'; font-size: 16px; }
-.modal-actions { display: flex; gap: 10px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
-.modal-btn {
-  display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
-  border-radius: 4px; border: 1px solid var(--border); background: var(--surface);
-  color: var(--text); font-family: var(--mono); font-size: 11px; cursor: pointer;
-  transition: all 0.2s; text-transform: uppercase;
-}
-.modal-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
-.modal-btn.primary:hover { background: #0f2540; border-color: #0f2540; }
-.modal-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-.section { padding: 56px 60px; }
-.section-header { display: flex; align-items: center; gap: 20px; margin-bottom: 36px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-.section-header h2 { font-family: var(--serif); font-size: 26px; font-weight: 700; color: var(--accent); }
-.section-header .count { font-family: var(--mono); font-size: 11px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 2px 10px; border-radius: 10px; }
+.stat-card {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-lg); padding: 24px;
+  transition: all 0.3s; backdrop-filter: blur(10px);
+}
 
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-4px);
+}
+
+.stat-num { font-size: 32px; font-weight: 700; margin-bottom: 6px; font-family: var(--font-serif); }
+.stat-label { font-size: 12px; opacity: 0.9; font-weight: 500; letter-spacing: 0.5px; }
+
+/* ===== SECTION ===== */
+.section { padding: 80px 32px; max-width: 1400px; margin: 0 auto; }
+
+.section-header {
+  margin-bottom: 56px; text-align: center;
+}
+
+.section-header h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 700; margin-bottom: 12px;
+  color: var(--primary);
+  position: relative; display: inline-block;
+}
+
+.section-header h2::after {
+  content: ''; position: absolute; bottom: -8px; left: 50%;
+  transform: translateX(-50%); width: 60px; height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+
+.section-header p { font-size: 15px; color: var(--text-light); margin-top: 20px; }
+
+/* ===== CARDS ===== */
+.cards-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+
 .card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 8px; padding: 24px; transition: all .25s;
-  box-shadow: var(--shadow); position: relative; overflow: hidden;
-  cursor: pointer; user-select: none;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 28px;
+  transition: all 0.3s; cursor: pointer;
+  box-shadow: var(--shadow);
+  position: relative; overflow: hidden;
 }
+
 .card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
-  opacity: 0; transition: opacity .25s;
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0; transition: opacity 0.3s;
 }
-.card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+.card:hover {
+  border-color: var(--primary-light);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
 .card:hover::before { opacity: 1; }
-.card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-.card-year { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-.card h3 { font-family: var(--serif); font-size: 17px; margin-bottom: 8px; line-height: 1.3; color: var(--accent); }
-.card p { color: var(--muted); font-size: 13.5px; line-height: 1.55; }
-.card-footer { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-.card-author { font-size: 13px; color: var(--text); font-weight: 500; }
-.card-supervisor { font-size: 12px; color: var(--muted); margin-top: 4px; }
-.card-link {
-  display: inline-flex; align-items: center; gap: 5px;
-  margin-top: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: .04em;
-  color: var(--accent2); text-decoration: none;
-  border: 1px solid rgba(139,69,19,.25); border-radius: 4px;
-  padding: 4px 10px; transition: all .2s;
-}
-.card-link:hover { background: rgba(139,69,19,.07); border-color: var(--accent2); }
 
-.dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.card-badge {
+  display: inline-block; padding: 6px 12px;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  color: white; border-radius: 4px;
+  font-size: 10px; font-weight: 700;
+  margin-bottom: 14px; letter-spacing: 0.5px; text-transform: uppercase;
+}
+
+.card-meta {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 12px; font-size: 12px;
+}
+
+.card-meta-tag {
+  background: var(--accent-pale); color: var(--accent);
+  padding: 4px 10px; border-radius: 4px; font-weight: 500;
+}
+
+.card h3 {
+  font-family: var(--font-serif);
+  font-size: 18px; font-weight: 700;
+  margin-bottom: 12px; color: var(--primary); line-height: 1.4;
+}
+
+.card p {
+  color: var(--text-light); font-size: 14px;
+  line-height: 1.6; margin-bottom: 18px;
+}
+
+.card-footer {
+  padding-top: 18px; border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--text-light);
+}
+
+.card-author { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+
+/* ===== DEPT CARDS ===== */
+.dept-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
 .dept-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 8px; padding: 28px 28px 24px; cursor: pointer;
-  transition: all .25s; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 28px;
+  cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow);
+  position: relative; overflow: hidden;
 }
-.dept-card:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-.dept-num { font-family: var(--mono); font-size: 10px; color: var(--gold); letter-spacing: .1em; margin-bottom: 14px; }
-.dept-card h3 { font-family: var(--serif); font-size: 16px; line-height: 1.35; margin-bottom: 10px; color: var(--accent); }
-.dept-card p { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
-.dept-card-footer { display: flex; align-items: center; justify-content: space-between; }
-.dept-ach-count { font-family: var(--mono); font-size: 10px; color: var(--muted); }
-.dept-arrow { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 14px; transition: all .2s; }
-.dept-card:hover .dept-arrow { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-.dept-header { background: var(--accent); color: #fff; padding: 50px 60px; position: relative; overflow: hidden; }
-.dept-header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; border: 40px solid rgba(255,255,255,.05); }
-.dept-header::after { content: ''; position: absolute; bottom: -60px; left: 30%; width: 140px; height: 140px; border-radius: 50%; border: 30px solid rgba(255,255,255,.04); }
-.back-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
-  color: rgba(255,255,255,.6); background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.2); padding: 6px 14px;
-  border-radius: 4px; cursor: pointer; margin-bottom: 24px;
-  transition: all .2s; text-transform: uppercase;
+.dept-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 51, 102, 0.02), rgba(211, 47, 47, 0.02));
+  opacity: 0; transition: opacity 0.3s; pointer-events: none;
 }
-.back-btn:hover { color: #fff; background: rgba(255,255,255,.15); }
-.dept-header .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 10px; }
-.dept-header h1 { font-family: var(--serif); font-size: clamp(22px, 3vw, 40px); font-weight: 900; margin-bottom: 14px; position: relative; }
-.dept-header p { color: rgba(255,255,255,.7); max-width: 600px; font-weight: 300; font-size: 15px; }
-.dept-header .head-label { margin-top: 20px; font-family: var(--mono); font-size: 15px; font-weight: bold; color: rgba(255,255,255,.711); letter-spacing: .06em; }
 
-.tabs-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 60px; background: var(--surface); overflow-x: auto; }
-.tab-btn { background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: var(--mono); font-size: 11px; font-weight: bold; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 14px 18px; white-space: nowrap; transition: all .2s; margin-bottom: -1px; }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-.tab-btn:hover { color: var(--accent2); }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+.dept-card:hover {
+  border-color: var(--primary-light);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
 
+.dept-card:hover::after { opacity: 1; }
+
+.dept-card > * { position: relative; z-index: 1; }
+
+.dept-num {
+  font-size: 11px; color: var(--accent); font-weight: 700;
+  letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase;
+}
+
+.dept-card h3 {
+  font-family: var(--font-serif);
+  font-size: 18px; font-weight: 700; margin-bottom: 10px;
+  color: var(--primary);
+}
+
+.dept-card p { font-size: 13px; color: var(--text-light); margin-bottom: 16px; line-height: 1.5; }
+
+.dept-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+}
+
+.dept-count { font-size: 12px; color: var(--text-light); font-weight: 500; }
+
+.dept-arrow {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 16px; transition: all 0.3s;
+  box-shadow: var(--shadow);
+}
+
+.dept-card:hover .dept-arrow { transform: translateX(6px); box-shadow: var(--shadow-md); }
+
+/* ===== MODALS ===== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px);
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-content {
+  background: var(--surface); border-radius: var(--radius-lg);
+  max-width: 750px; width: 100%; max-height: 90vh;
+  overflow-y: auto; box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(0, 51, 102, 0.1);
+}
+
+.modal-header {
+  padding: 36px; border-bottom: 2px solid var(--primary);
+  position: relative; background: linear-gradient(135deg, rgba(0, 51, 102, 0.02), rgba(211, 47, 47, 0.01));
+}
+
+.modal-close {
+  position: absolute; top: 24px; right: 24px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 50%; width: 36px; height: 36px; cursor: pointer;
+  font-size: 20px; color: var(--text-light);
+  transition: all 0.3s; display: flex;
+  align-items: center; justify-content: center;
+}
+
+.modal-close:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  transform: rotate(90deg);
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 28px; font-weight: 700;
+  color: var(--primary); line-height: 1.3; margin-bottom: 14px;
+}
+
+.modal-meta {
+  display: flex; flex-wrap: wrap; gap: 20px;
+  font-size: 13px; color: var(--text-light);
+}
+
+.modal-meta-item {
+  display: flex; align-items: center; gap: 6px;
+}
+
+.modal-meta-item strong { color: var(--primary); }
+
+.modal-body { padding: 36px; }
+
+.modal-section { margin-bottom: 28px; }
+
+.modal-section:last-child { margin-bottom: 0; }
+
+.modal-section-title {
+  font-size: 11px; font-weight: 700;
+  color: var(--accent); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 12px;
+}
+
+.modal-section-content {
+  font-size: 14px; color: var(--text); line-height: 1.7;
+}
+
+.modal-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: white; background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  text-decoration: none; padding: 11px 18px;
+  border-radius: var(--radius); font-size: 13px; font-weight: 600;
+  transition: all 0.3s; margin-top: 12px;
+  box-shadow: var(--shadow);
+}
+
+.modal-link:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== SEARCH ===== */
+.search-section {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 32px;
+  box-shadow: var(--shadow); margin-bottom: 56px;
+  max-width: 1400px; margin-left: auto; margin-right: auto;
+}
+
+.search-controls {
+  display: grid; grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 14px; align-items: flex-end;
+}
+
+.search-input, .search-select {
+  padding: 12px 14px; border: 1.5px solid var(--border);
+  border-radius: var(--radius); font-family: var(--font-sans);
+  font-size: 13px; transition: all 0.3s; background: var(--surface);
+}
+
+.search-input:focus, .search-select:focus {
+  outline: none; border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.08);
+}
+
+.search-btn {
+  padding: 12px 24px; border: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white; border-radius: var(--radius); font-weight: 600;
+  cursor: pointer; transition: all 0.3s;
+  font-size: 13px; box-shadow: var(--shadow);
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== LOGIN ===== */
 #login-overlay {
   position: fixed; inset: 0; z-index: 200;
-  background: rgba(245,242,235,.97);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   display: flex; align-items: center; justify-content: center;
+  border-bottom: 6px solid var(--accent);
 }
-.login-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 48px; width: 100%; max-width: 420px; box-shadow: var(--shadow-lg); position: relative; }
-.login-badge { display: inline-block; font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; border: 1px solid rgba(26,58,92,.3); padding: 4px 12px; border-radius: 2px; margin-bottom: 24px; }
-.login-box h2 { font-family: var(--serif); font-size: 28px; color: var(--accent); margin-bottom: 6px; }
-.login-box .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
-.login-close { position: absolute; top: 20px; right: 20px; background: none; border: 1px solid var(--border); border-radius: 50%; width: 28px; height: 28px; cursor: pointer; color: var(--muted); font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .2s; }
-.login-close:hover { color: var(--text); border-color: var(--text); }
-.form-group { margin-bottom: 18px; }
-.form-group label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
-.form-control { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: var(--sans); font-size: 14px; padding: 10px 14px; border-radius: 6px; outline: none; transition: border-color .2s; }
-.form-control:focus { border-color: var(--accent); }
-.form-control:disabled { background: var(--surface); color: var(--muted); cursor: not-allowed; opacity: 0.7; }
-.form-control option { background: var(--bg); }
-textarea.form-control { resize: vertical; min-height: 80px; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 22px; border-radius: 6px; border: none; font-family: var(--mono); font-size: 12px; letter-spacing: .05em; cursor: pointer; transition: all .2s; text-transform: uppercase; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: #0f2540; }
-.btn-full { width: 100%; }
-.btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-.btn-danger { background: var(--danger); color: #fff; }
-.btn-danger:hover { filter: brightness(1.1); }
-.btn-sm { padding: 5px 12px; font-size: 10px; }
-.login-error { margin-top: 12px; padding: 10px 14px; background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.3); border-radius: 6px; color: var(--danger); font-size: 13px; }
 
-.cms-layout { display: flex; min-height: calc(100vh - 60px); }
-.cms-sidebar { width: 230px; flex-shrink: 0; background: var(--accent); padding: 32px 0; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
-.cms-logo { padding: 0 20px 24px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 12px; font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
-.cms-logo strong { display: block; color: #fff; font-size: 14px; margin-bottom: 2px; }
-.cms-nav-btn { display: flex; align-items: center; gap: 10px; width: 100%; background: none; border: none; text-align: left; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: rgba(255,255,255,.55); padding: 11px 20px; transition: all .15s; border-left: 3px solid transparent; }
-.cms-nav-btn:hover { color: rgba(255,255,255,.85); background: rgba(255,255,255,.06); }
-.cms-nav-btn.active { color: #fff; background: rgba(255,255,255,.1); border-left-color: var(--gold); }
-.cms-nav-icon { font-size: 16px; }
-.cms-user-info { margin-top: auto; padding: 20px; border-top: 1px solid rgba(255,255,255,.1); font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,.5); }
-.cms-user-info strong { display: block; color: rgba(255,255,255,.8); margin-bottom: 8px; }
-.cms-logout { width: 100%; background: rgba(255,255,255,.1); border: none; cursor: pointer; font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,.6); padding: 7px; border-radius: 4px; transition: all .2s; text-align: center; }
-.cms-logout:hover { background: rgba(255,255,255,.2); color: #fff; }
-.cms-main { flex: 1; padding: 40px; overflow-y: auto; background: var(--bg); }
-.cms-title { font-family: var(--serif); font-size: 28px; color: var(--accent); margin-bottom: 32px; }
-.cms-panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 32px; margin-bottom: 28px; box-shadow: var(--shadow); }
-.cms-panel h3 { font-family: var(--serif); font-size: 20px; color: var(--accent); margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.login-box {
+  background: var(--surface); border-radius: var(--radius-lg);
+  padding: 48px; width: 100%; max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(0, 51, 102, 0.1);
+}
+
+.login-box h2 {
+  font-family: var(--font-serif);
+  font-size: 28px; color: var(--primary);
+  margin-bottom: 8px; font-weight: 700;
+}
+
+.login-box .subtitle {
+  color: var(--text-light); font-size: 14px; margin-bottom: 32px;
+}
+
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+  display: block; font-size: 11px; font-weight: 700;
+  color: var(--primary); margin-bottom: 8px; text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-control {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--border); background: var(--bg);
+  border-radius: var(--radius); font-family: var(--font-sans);
+  font-size: 14px; color: var(--text);
+  transition: all 0.3s;
+}
+
+.form-control:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 12px 24px; border: none;
+  border-radius: var(--radius); font-family: var(--font-sans);
+  font-weight: 600; cursor: pointer; transition: all 0.3s;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white; width: 100%; box-shadow: var(--shadow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== STATUS BADGE ===== */
+#rt-badge {
+  position: fixed; bottom: 28px; right: 28px; z-index: 90;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--text-light); box-shadow: var(--shadow-md);
+  font-weight: 500;
+}
+
+.rt-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--text-lighter); transition: background 0.3s;
+}
+
+.rt-dot.live { background: #10b981; animation: pulse 2s infinite; }
+
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* ===== CMS ===== */
+.cms-layout { display: flex; min-height: calc(100vh - 72px); }
+
+.cms-sidebar {
+  width: 260px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white; padding: 32px 0; position: sticky; top: 72px;
+  height: calc(100vh - 72px); overflow-y: auto; box-shadow: var(--shadow-md);
+}
+
+.cms-nav-btn {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; background: none; border: none;
+  text-align: left; cursor: pointer; font-family: var(--font-sans);
+  font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.7);
+  padding: 14px 20px; transition: all 0.3s; border-left: 3px solid transparent;
+}
+
+.cms-nav-btn:hover { color: white; background: rgba(255, 255, 255, 0.1); }
+
+.cms-nav-btn.active {
+  color: white; background: rgba(211, 47, 47, 0.25);
+  border-left-color: var(--accent);
+}
+
+.cms-main { flex: 1; padding: 44px 40px; background: var(--bg); overflow-y: auto; }
+
+.cms-title {
+  font-family: var(--font-serif);
+  font-size: 32px; color: var(--primary); margin-bottom: 36px;
+  font-weight: 700;
+}
+
+.cms-panel {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 32px;
+  margin-bottom: 28px; box-shadow: var(--shadow);
+  border-top: 4px solid var(--accent);
+}
+
+.cms-panel h3 {
+  font-family: var(--font-serif);
+  font-size: 18px; color: var(--primary);
+  margin-bottom: 24px; font-weight: 700;
+}
+
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-actions { display: flex; gap: 10px; margin-top: 20px; }
-.alert { padding: 10px 16px; border-radius: 6px; font-family: var(--mono); font-size: 12px; letter-spacing: .03em; margin-top: 14px; }
-.alert-ok { background: rgba(30,122,74,.08); border: 1px solid rgba(30,122,74,.25); color: var(--success); }
-.alert-err { background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.25); color: var(--danger); }
 
-.table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead { background: var(--surface); }
-th { font-family: var(--mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); }
-td { padding: 12px 14px; border-bottom: 1px solid rgba(216,211,198,.5); vertical-align: top; }
+/* ===== FOOTER ===== */
+footer {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: rgba(255, 255, 255, 0.85); padding: 48px 32px;
+  text-align: center; border-top: 6px solid var(--accent);
+}
+
+footer p { font-size: 14px; margin: 4px 0; }
+
+/* ===== TABLE ===== */
+.table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--surface); }
+
+thead { background: linear-gradient(135deg, rgba(0, 51, 102, 0.05), rgba(211, 47, 47, 0.02)); }
+
+th {
+  font-weight: 700; color: var(--primary); padding: 14px;
+  text-align: left; border-bottom: 2px solid var(--border);
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+td { padding: 13px 14px; border-bottom: 1px solid var(--border); }
+
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(26,58,92,.02); }
-.td-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
-.empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
-.empty-state .icon { font-size: 36px; margin-bottom: 12px; opacity: .5; }
-.empty-state p { font-size: 14px; }
 
-.loading-overlay { position: fixed; inset: 0; z-index: 300; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
-.loader { width: 40px; height: 40px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .08em; }
+.achievement-block {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; margin-bottom: 16px; position: relative;
+  background: #fafbfc;
+}
+.achievement-block .block-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.achievement-block .block-num {
+  font-family: var(--font-serif); font-weight: 700; color: var(--primary); font-size: 15px;
+}
+.achievement-block .remove-btn {
+  background: none; border: none; cursor: pointer; color: var(--accent);
+  font-size: 18px; line-height: 1; padding: 0 4px;
+}
+.achievement-block .remove-btn:hover { opacity: 0.7; }
 
-footer { background: var(--accent); color: rgba(255,255,255,.6); padding: 40px 60px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-footer .f-brand { font-family: var(--mono); font-size: 12px; color: rgba(255,255,255,.8); }
-footer p { font-size: 12px; }
+/* ===== APPLICATION FORM PAGE ===== */
+.app-form-hero {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white; padding: 64px 32px 48px;
+  border-bottom: 6px solid var(--accent); text-align: center;
+}
+.app-form-hero h1 { font-family: var(--font-serif); font-size: clamp(28px,5vw,40px); margin-bottom: 12px; }
+.app-form-hero p { font-size: 15px; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+.app-form-wrap { max-width: 760px; margin: 0 auto; padding: 56px 32px; }
+.app-form-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-md);
+}
+.app-form-card h2 { font-family: var(--font-serif); color: var(--primary); font-size: 22px; margin-bottom: 8px; }
+.app-form-card .subtitle {
+  color: var(--text-light); font-size: 13px; margin-bottom: 32px;
+  padding-bottom: 24px; border-bottom: 1px solid var(--border);
+}
+.app-number-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent-pale); color: var(--accent);
+  border: 1px solid rgba(211,47,47,0.2);
+  border-radius: var(--radius); padding: 8px 16px;
+  font-weight: 700; font-size: 14px; margin-bottom: 28px;
+}
+.app-success { display: none; text-align: center; padding: 48px 32px; }
+.app-success.show { display: block; }
+.app-success-icon { font-size: 64px; margin-bottom: 16px; }
+.app-success h3 { font-family: var(--font-serif); font-size: 24px; color: var(--primary); margin-bottom: 8px; }
+.app-success p { color: var(--text-light); margin-bottom: 8px; }
+.app-success .app-num { font-size: 22px; font-weight: 700; color: var(--accent); margin: 16px 0 24px; }
+.app-status-badge {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px;
+}
+.status-new { background: #e3f2fd; color: #1565c0; }
+.status-review { background: #fff8e1; color: #f57f17; }
+.status-approved { background: #e8f5e9; color: #2e7d32; }
+.status-rejected { background: #ffebee; color: #c62828; }
+.app-row-expand { display: none; background: #f8fafc; }
+.app-row-expand.open { display: table-row; }
+.app-row-expand td { padding: 20px 24px; font-size: 13px; }
+.app-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px; }
+.app-detail-item label { font-size: 11px; text-transform: uppercase; color: var(--text-lighter); font-weight: 600; display: block; margin-bottom: 2px; }
+.app-detail-item span { font-size: 13px; color: var(--text); }
+.app-actions-row { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
 
-@media (max-width: 900px) {
-  .hero, .section { padding: 40px 24px; }
-  .dept-header, footer { padding: 40px 24px; }
-  .tabs-bar { padding: 0 24px; }
-  .hero h1 { font-size: 30px; }
-  .hero-stats { flex-direction: column; gap: 0; }
-  .stat-item { border-right: 1px solid var(--border); border-bottom: none; }
-  .cards-grid, .dept-grid { grid-template-columns: 1fr; }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 860px) {
+  .header-nav { display: none; }
+  .burger { display: flex; }
+  #site-header { padding: 0 20px; height: 64px; }
+  .page { padding-top: 64px; }
+  #mobile-nav { top: 64px; }
+}
+
+@media (min-width: 861px) {
+  .burger { display: none; }
+  #mobile-nav { display: none !important; }
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 56px 20px 64px; border-bottom: 4px solid var(--accent); }
+  .section { padding: 56px 20px; }
+  .cards-grid { grid-template-columns: 1fr; gap: 20px; }
+  .dept-grid { grid-template-columns: 1fr; }
+  .search-controls { grid-template-columns: 1fr; }
+  .cms-sidebar { width: 220px; }
+  .cms-main { padding: 28px 20px; }
   .form-row { grid-template-columns: 1fr; }
-  .cms-sidebar { width: 60px; }
-  .cms-sidebar .cms-logo, .cms-sidebar .cms-nav-btn span, .cms-sidebar .cms-user-info strong, .cms-sidebar .cms-logout { display: none; }
-  .cms-nav-btn { justify-content: center; padding: 14px; }
-  .cms-main { padding: 24px 16px; }
-  #site-header { padding: 0 16px; }
-  .nav-btn { font-size: 10px; padding: 5px 8px; }
-  .search-section { padding: 20px; }
-  .search-controls { grid-template-columns: 1fr; gap: 12px; }
-  .search-input-group { flex-direction: column; gap: 10px; }
-  .search-select { min-width: auto; width: 100%; }
-  .search-btn { width: 100%; }
-  .modal-overlay { padding: 10px; }
   .modal-content { max-height: 95vh; }
-  .modal-header { padding: 24px 20px 20px; }
-  .modal-body { padding: 24px 20px; }
-  .modal-title { font-size: 22px; padding-right: 35px; }
-  .modal-close { top: 16px; right: 16px; width: 28px; height: 28px; font-size: 20px; }
-  .modal-meta { gap: 12px; font-size: 12px; }
-  .modal-section-content { font-size: 14px; }
+  .hero h1 { font-size: 32px; }
+  .section-header h2 { font-size: 26px; }
+  .stat-card { padding: 18px; }
+  .stat-num { font-size: 26px; }
+}
+
+@media (max-width: 480px) {
+  #site-header { padding: 0 16px; }
+  .header-brand { gap: 10px; }
+  .brand-logo { width: 40px; height: 40px; font-size: 14px; }
+  .cms-sidebar { width: 70px; }
+  .cms-sidebar .cms-nav-btn span { display: none; }
+  .cms-nav-btn { justify-content: center; }
+  .app-detail-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<div class="loading-overlay" id="loading">
-  <div class="loader"></div>
-  <div class="loading-text">Подключение к базе данных...</div>
-</div>
-
 <header id="site-header">
   <div class="header-brand" onclick="nav('home')">
     <div class="brand-logo">ФЭМ</div>
-    <div class="brand-text">БГЭУ <span>/ Реестр научных достижений</span></div>
+    <div class="brand-text">
+      Реестр<br>
+      <span>ФЭМ БГЭУ</span>
+    </div>
   </div>
   <nav class="header-nav">
     <button class="nav-btn active" data-page="home" onclick="nav('home')">Главная</button>
@@ -426,1125 +747,1490 @@ footer p { font-size: 12px; }
     <button class="nav-btn" data-page="dept-ou" onclick="nav('dept','ou')">ОиУ</button>
     <button class="nav-btn" data-page="dept-negu" onclick="nav('dept','negu')">НЭиГУ</button>
     <div class="nav-sep"></div>
-    <button class="nav-btn cms-btn" id="auth-btn" onclick="handleAuthBtn()">Войти</button>
+    <button class="nav-btn" data-page="apply" onclick="nav('apply')">📝 Подать заявку</button>
+    <div class="nav-sep"></div>
+    <button class="nav-btn" id="auth-btn" onclick="handleAuthBtn()">Войти</button>
   </nav>
+  <button class="burger" id="burger-btn" onclick="toggleMobileNav()" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
-<div id="rt-badge">
-  <span class="rt-dot" id="rt-dot"></span>
-  <span id="rt-text">Подключение...</span>
+<nav id="mobile-nav">
+  <button class="nav-btn" data-page="home" onclick="nav('home');closeMobileNav()">🏠 Главная</button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" data-page="dept-epp" onclick="nav('dept','epp');closeMobileNav()">ЭПП</button>
+  <button class="nav-btn" data-page="dept-apk" onclick="nav('dept','apk');closeMobileNav()">АПКиП</button>
+  <button class="nav-btn" data-page="dept-ou" onclick="nav('dept','ou');closeMobileNav()">ОиУ</button>
+  <button class="nav-btn" data-page="dept-negu" onclick="nav('dept','negu');closeMobileNav()">НЭиГУ</button>
+  <div class="nav-sep"></div>
+  <button class="apply-mobile-btn" onclick="nav('apply');closeMobileNav()">📝 Подать заявку</button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" id="auth-btn-mobile" onclick="handleAuthBtn();closeMobileNav()">Войти</button>
+</nav>
+
+<div id="rt-badge"><span class="rt-dot live" id="rt-dot"></span><span id="rt-text">Online</span></div>
+<div id="login-overlay" class="hidden"><div class="login-box"><h2>Вход в систему</h2><p class="subtitle">Доступ для сотрудников</p><div class="form-group"><label>Логин</label><input class="form-control" type="text" id="l-user" placeholder="логин"></div><div class="form-group"><label>Пароль</label><input class="form-control" type="password" id="l-pass" placeholder="пароль"></div><button class="btn btn-primary" onclick="doLogin()">Войти</button></div></div>
+
+<div class="modal-overlay" id="achievement-modal"><div class="modal-content"><div class="modal-header"><button class="modal-close" onclick="closeAchievementModal()">&times;</button><h2 class="modal-title" id="modal-title"></h2><div class="modal-meta" id="modal-meta"></div></div><div class="modal-body" id="modal-body"></div>
+<div style="padding:0 28px 28px;">
+  <div style="background:linear-gradient(135deg,rgba(0,51,102,0.04),rgba(211,47,47,0.02)); border:1.5px solid var(--border); border-radius:var(--radius-lg); padding:18px 20px;">
+    <div style="font-size:11px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:10px;">📄 Как получить справку</div>
+    <p style="font-size:13px; color:var(--text); line-height:1.7; margin-bottom:12px;">
+      Чтобы получить справку, подтверждающую наличие данного достижения в реестре, отправьте письмо:
+    </p>
+    <div style="background:var(--accent-pale); border-radius:var(--radius); padding:10px 14px; margin-bottom:12px; font-size:13px;">
+      📧 <strong><a href="mailto:sno_fem_bseu@mail.ru" style="color:var(--accent); text-decoration:none;">sno_fem_bseu@mail.ru</a></strong>
+    </div>
+    <div style="font-size:13px; color:var(--text); line-height:1.9; margin-bottom:10px;">
+      <strong>В письме укажите:</strong><br>
+      <span style="color:var(--text-light);">• Реестровые номера достижений<br>• Ваше ФИО<br>• ФИО научного преподавателя в <em>родительном падеже</em></span>
+    </div>
+    <div style="font-size:13px; color:var(--text); margin-bottom:10px;">
+      <strong>Тема письма:</strong> <code style="background:var(--bg); padding:2px 8px; border-radius:4px; font-size:12px; color:var(--primary); border:1px solid var(--border);">Реестр_Справка_Достижения</code>
+    </div>
+    <div style="padding:10px 14px; background:#e3f2fd; border-radius:var(--radius); font-size:13px; color:#1565c0;">
+      ⏱ Справка будет готова в течение <strong>3 рабочих дней</strong>. Забрать можно будет у <strong>Гулиной Ольги Валериевны</strong>, заместителя декана ФЭМ (деканат, 4/302).
+    </div>
+  </div>
 </div>
+</div></div>
 
-<div id="login-overlay" class="hidden">
-  <div class="login-box">
-    <button class="login-close" onclick="closeLogin()">✕</button>
-    <div class="login-badge">БГЭУ · ФЭиМ · CMS</div>
-    <h2>Вход в систему</h2>
-    <p class="subtitle">Доступ только для сотрудников факультета</p>
-    <div class="form-group">
-      <label>Логин</label>
-      <input class="form-control" type="text" id="l-user" placeholder="ваш_логин" autocomplete="username">
-    </div>
-    <div class="form-group">
-      <label>Пароль</label>
-      <input class="form-control" type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password">
-    </div>
-    <button class="btn btn-primary btn-full" onclick="doLogin()">Войти</button>
-    <div class="login-error hidden" id="l-err">Неверный логин или пароль</div>
-  </div>
+<div class="page active" id="page-home"><div class="hero"><h1>Реестр научных достижений</h1><p class="hero-sub">Научные достижения студентов<br>факультета экономики и менеджмента БГЭУ</p>
+<div style="margin:28px 0 8px; display:flex; justify-content:center;">
+  <button onclick="nav('apply')" style="
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--accent); color:white;
+    border:none; border-radius:10px; cursor:pointer;
+    padding:14px 32px; font-size:15px; font-weight:700;
+    font-family:var(--font-sans); letter-spacing:0.3px;
+    box-shadow:0 4px 16px rgba(211,47,47,0.35);
+    transition:all 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(211,47,47,0.45)'"
+     onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(211,47,47,0.35)'">
+    📝 Подать заявку на регистрацию достижения
+  </button>
 </div>
-
-<div class="modal-overlay" id="achievement-modal" onclick="closeAchievementModal(event)">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <button class="modal-close" onclick="closeAchievementModal()">&times;</button>
-      <div class="modal-tags" id="modal-tags"></div>
-      <h2 class="modal-title" id="modal-title"></h2>
-      <div class="modal-meta" id="modal-meta"></div>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-    <!-- кнопка скачивания справки удалена -->
-    <div style="padding: 0 40px 32px;" id="modal-actions-container"></div>
-  </div>
-</div>
-
-<div class="page active" id="page-home">
-  <div class="hero">
-    <div class="hero-eyebrow fu">Белорусский государственный экономический университет</div>
-    <h1 class="fu fu2">Факультет <em>экономики</em><br>и менеджмента</h1>
-    <p class="hero-sub fu fu3">Реестр научных достижений студентов. Студенческие научно-исследовательские лаборатории.</p>
-    <div class="hero-stats fu fu4">
-      <div class="stat-item">
-        <div class="stat-num" id="stat-total">—</div>
-        <div class="stat-label">Работ и достижений</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">4</div>
-        <div class="stat-label">Кафедры</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="stat-year">—</div>
-        <div class="stat-label">Учебный год</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><h2>Кафедры факультета</h2></div>
-    <div class="dept-grid" id="home-dept-grid"></div>
-  </div>
-
-  <div class="section" style="padding-top:0">
-    <div class="search-section">
-      <div class="search-title">🔍 Поиск достижений</div>
-      <div class="search-controls">
-        <div class="search-input-group">
-          <input type="text" class="search-input" id="search-query" placeholder="Номер, фамилия автора, название работы..." onkeypress="if(event.key==='Enter') performSearch()">
-          <select class="search-select" id="search-type">
-            <option value="">Все типы</option>
-            <option value="Конференция">Конференция</option>
-            <option value="Олимпиада">Олимпиада</option>
-            <option value="Публикация">Публикация</option>
-            <option value="Грант / Конкурс">Грант / Конкурс</option>
-            <option value="Диплом / Награда">Диплом / Награда</option>
-            <option value="НИРС">НИРС</option>
-            <option value="Акт (справка) о внедрении">Акт (справка) о внедрении</option>
-          </select>
-          <select class="search-select" id="search-dept">
-            <option value="">Все кафедры</option>
-            <option value="epp">ЭПП</option>
-            <option value="apk">АПКиП</option>
-            <option value="ou">ОиУ</option>
-            <option value="negu">НЭиГУ</option>
-          </select>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <button class="search-btn" onclick="performSearch()">Найти</button>
-          <button class="search-btn reset" onclick="resetSearch()">Сбросить</button>
-        </div>
-      </div>
-      <div class="search-results-info hidden" id="search-results-info">
-        Найдено: <span class="search-results-count" id="search-results-count">0</span> достижений
-      </div>
-    </div>
-
-    <div class="section-header">
-      <h2 id="achievements-section-title">Последние добавленные достижения</h2>
-      <span class="count" id="home-ach-count">0</span>
-    </div>
-    <div class="cards-grid" id="home-cards"></div>
-  </div>
-
-  <footer>
-    <div class="f-brand">БГЭУ · Факультет экономики и менеджмента · Реестр научных достижений студентов</div>
-    <p>г. Минск, пр. Партизанский, 22А</p>
-  </footer>
-</div>
+<div class="hero-stats"><div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Достижений</div></div><!-- <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Кафедр</div></div><div class="stat-card"><div class="stat-num" id="stat-year">2024</div><div class="stat-label">Учебный год</div></div>--></div></div><div class="section"><div class="section-header"><h2>Кафедры факультета</h2></div><div class="dept-grid" id="home-dept-grid"></div></div><div class="section"><div class="search-section"><h3 style="margin:0 0 20px 0; font-family:var(--font-serif);">Поиск достижений</h3><div class="search-controls"><input type="text" class="search-input" id="search-query" placeholder="Название, автор, реестровый №..." onkeypress="if(event.key==='Enter')performSearch()"><select class="search-select" id="search-type"><option value="">Все типы</option><option>Конференция</option><option>Олимпиада</option><option>Публикация</option></select><select class="search-select" id="search-dept"><option value="">Все кафедры</option><option value="epp">ЭПП</option><option value="apk">АПКиП</option><option value="ou">ОиУ</option><option value="negu">НЭиГУ</option></select><button class="search-btn" onclick="performSearch()">Найти</button></div></div><div class="section-header"><h2 id="achievements-title">Последние добавленные</h2><p id="achievements-count">Загрузка...</p></div><div class="cards-grid" id="home-cards"></div></div><footer><p><strong>БГЭУ · Факультет экономики и менеджмента</strong></p><p>Реестр научных достижений студентов</p><p style="font-size:12px; margin-top:12px;">г. Минск, пр. Партизанский, 22А</p></footer></div> 
 
 <div class="page" id="page-dept"></div>
+<div class="page" id="page-apply">
+  <div class="app-form-hero">
+    <h1>Подача заявки на регистрацию</h1>
+    <p>Заполните форму — актив СНО факультета рассмотрит заявку и внесёт данные в реестр</p>
+  </div>
+  <div class="app-form-wrap">
+    <div class="app-form-card">
+      <div id="app-form-inner">
+        <h2>Заявка на регистрацию достижений</h2>
+        <p class="subtitle">Вы можете добавить одно или несколько достижений в одной заявке. После отправки актив СНО факультета проверит данные и внесёт их в реестр.</p>
+        <div class="app-number-badge">🔖 Номер заявки будет присвоен автоматически</div>
 
-<div class="page" id="page-cms">
-  <div class="cms-layout">
-    <aside class="cms-sidebar">
-      <div class="cms-logo"><strong>CMS Панель</strong>ФЭиМ БГЭУ</div>
-      <button class="cms-nav-btn active" data-cms="achievements" onclick="cmsSection('achievements')">
-        <span class="cms-nav-icon">🏆</span><span>Достижения</span>
-      </button>
-      <button class="cms-nav-btn" data-cms="deptinfo" onclick="cmsSection('deptinfo')">
-        <span class="cms-nav-icon">📋</span><span>Кафедры</span>
-      </button>
-      <button class="cms-nav-btn" data-cms="report" onclick="cmsSection('report')">
-        <span class="cms-nav-icon">📊</span><span>Отчёт по годам</span>
-      </button>
-      <button class="cms-nav-btn" data-cms="certlog" onclick="cmsSection('certlog')">
-        <span class="cms-nav-icon">📚</span><span>Журнал справок</span>
-      </button>
-      <button class="cms-nav-btn" data-cms="users" onclick="cmsSection('users')">
-        <span class="cms-nav-icon">👥</span><span>Пользователи</span>
-      </button>
-      <div style="flex:1"></div>
-      <div class="cms-user-info">
-        <strong id="cms-username">—</strong>
-        <button class="cms-logout" onclick="doLogout()">Выйти из системы</button>
-      </div>
-    </aside>
-
-    <main class="cms-main">
-      <div id="cms-achievements">
-        <div class="cms-title">Управление достижениями</div>
-        <div class="cms-panel">
-          <h3 id="a-form-title">Добавить достижение</h3>
-          <input type="hidden" id="a-edit-id">
-          <div class="form-group hidden" id="a-num-group">
-            <label>Уникальный номер <span style="color:var(--gold);font-size:9px">(присваивается автоматически)</span></label>
-            <input class="form-control" id="a-unique-num" disabled>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Кафедра</label>
-              <select class="form-control" id="a-dept">
-                <option value="epp">Экономики промышленных предприятий</option>
-                <option value="apk">Экономики АПК и природопользования</option>
-                <option value="ou">Организации и управления</option>
-                <option value="negu">Национальной экономики и ГУ</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Тип</label>
-              <select class="form-control" id="a-type">
-                <option>Конференция</option>
-                <option>Олимпиада</option>
-                <option>Публикация</option>
-                <option>Грант / Конкурс</option>
-                <option>Диплом / Награда</option>
-                <option>НИРС</option>
-                <option>Акт (справка) о внедрении</option>
-                <option>Другое</option>
-              </select>
-            </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Фамилия, Имя, Отчество *</label>
+            <input class="form-control" type="text" id="app-fio" placeholder="Иванов Иван Иванович">
           </div>
           <div class="form-group">
-            <label>Заголовок</label>
-            <input class="form-control" type="text" id="a-title" placeholder="Название достижения...">
+            <label>Группа *</label>
+            <input class="form-control" type="text" id="app-group" placeholder="25ДКХ-2">
           </div>
-          <div class="form-group">
-            <label>Описание</label>
-            <textarea class="form-control" id="a-desc" placeholder="Подробное описание..."></textarea>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Автор(ы) / Студент(ы)</label>
-              <input class="form-control" type="text" id="a-author" placeholder="Иванов И.И.">
-            </div>
-            <div class="form-group">
-              <label>Год</label>
-              <input class="form-control" type="text" id="a-year" placeholder="2024">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Научный руководитель</label>
-            <input class="form-control" type="text" id="a-sup" placeholder="Фамилия И.О., к.э.н., доцент">
-          </div>
-          <div class="form-group">
-            <label>Ссылка на публикацию / источник <span style="color:var(--muted);font-size:9px">(необязательно)</span></label>
-            <input class="form-control" type="url" id="a-link" placeholder="https://...">
-          </div>
-          <div class="form-actions">
-            <button class="btn btn-primary" onclick="saveAchievement()">Сохранить</button>
-            <button class="btn btn-secondary" onclick="cancelEdit()">Сброс</button>
-          </div>
-          <div class="alert alert-ok hidden" id="a-ok">✓ Сохранено в базе данных</div>
-          <div class="alert alert-err hidden" id="a-err">Ошибка сохранения</div>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Номер</th><th>Год</th><th>Кафедра</th><th>Тип</th><th>Заголовок</th><th>Автор</th><th>Действия</th></tr></thead>
-            <tbody id="a-tbody"></tbody>
-          </table>
-        </div>
-      </div>
 
-      <div id="cms-deptinfo" class="hidden">
-        <div class="cms-title">Информация о кафедрах</div>
-        <div id="dept-info-panels"></div>
-      </div>
+        <div id="achievements-list"></div>
 
-      <!-- НОВЫЙ РАЗДЕЛ: ОТЧЁТ ПО ГОДАМ -->
-      <div id="cms-report" class="hidden">
-        <div class="cms-title">Годовой отчёт по достижениям</div>
-        <div class="cms-panel">
-          <h3>Параметры отчёта</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Выберите год</label>
-              <select class="form-control" id="report-year">
-                <option value="">-- все годы --</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button class="btn btn-primary" onclick="generateYearReportPDF()">📄 Сформировать PDF-отчёт</button>
-          </div>
-          <div id="report-preview" style="margin-top:20px; font-size:13px; color:var(--muted);">
-            <!-- Здесь будет предпросмотр количества найденных достижений -->
-          </div>
-        </div>
-      </div>
+        <button type="button" class="btn" onclick="addAchievementBlock()"
+          style="width:100%; margin-bottom:20px; border:2px dashed var(--border); background:transparent; color:var(--primary); font-size:14px; padding:12px;">
+          + Добавить ещё достижение
+        </button>
 
-      <div id="cms-certlog" class="hidden">
-        <div class="cms-title">Журнал выданных справок</div>
-        <div class="cms-panel">
-          <div class="form-row" style="margin-bottom:16px;">
-            <div class="form-group">
-              <label>Поиск по номеру справки</label>
-              <input class="form-control" type="text" id="cert-search-number" placeholder="Например: 000001">
-            </div>
-            <div class="form-group">
-              <label>Поиск по студенту</label>
-              <input class="form-control" type="text" id="cert-search-student" placeholder="Фамилия">
-            </div>
-            <div class="form-group" style="display:flex; align-items:flex-end;">
-              <button class="btn btn-primary" onclick="searchCertLog()">Найти</button>
-              <button class="btn btn-secondary" onclick="resetCertSearch()" style="margin-left:8px;">Сброс</button>
-            </div>
-          </div>
-          <div class="form-row" style="margin-bottom:16px; align-items: flex-end;">
-            <div class="form-group">
-              <label>Экспорт за месяц (год-месяц)</label>
-              <input type="month" class="form-control" id="export-month" value="2026-04">
-            </div>
-            <div class="form-group">
-              <button class="btn btn-primary" onclick="exportMonthPDF()">📄 Экспорт журнала за месяц (PDF)</button>
-            </div>
-          </div>
+        <div style="padding:14px 16px; background:var(--accent-pale); border-radius:var(--radius); font-size:13px; color:var(--accent); margin-bottom:24px;">
+          ⚠️ После отправки заявка поступит на проверку в актив СНО факультета. Сохраните номер заявки для отслеживания статуса.
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>№ справки</th><th>Дата</th><th>Студент</th><th>Группа</th><th>№ достижений (реестр)</th><th>Кол-во</th><th>Кем выдана</th></tr></thead>
-            <tbody id="cert-log-tbody"><tr><td colspan="7"><div class="empty-state">Загрузка...</div></td></tr></tbody>
-          </table>
+        <button class="btn btn-primary" onclick="submitApplication()" style="width:100%;">📤 Отправить заявку</button>
+      </div>
+      <div class="app-success" id="app-success-block">
+        <div class="app-success-icon">✅</div>
+        <h3>Заявка подана!</h3>
+        <p>Ваша заявка зарегистрирована под номером:</p>
+        <div class="app-num" id="app-success-num">—</div>
+        <p style="margin-bottom:24px;">Сохраните этот номер — по нему можно отследить статус заявки ниже.</p>
+        <div style="background:#e3f2fd; border:1.5px solid #1976d2; border-radius:var(--radius-lg); padding:20px; margin-bottom:24px; line-height:1.8; font-size:14px; color:var(--text);">
+          <p><strong style="color:var(--primary);">📋 Что происходит дальше?</strong></p>
+          <p style="margin-top:10px;">Члены актива студенческого научного общества факультета получат вашу заявку, проверят данные и самостоятельно внесут достижения в реестр.</p>
+          <p style="margin-top:8px; font-size:13px; color:var(--text-light);">Срок рассмотрения — до 3–5 рабочих дней. По вопросам обращайтесь к активу СНО ФЭМ.</p>
+          <p style="margin-top:12px;">Ваш номер заявки: <strong id="app-num-for-print" style="color:var(--accent);"></strong></p>
+        </div>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="resetApplicationForm()" style="min-width:200px;">📝 Подать новую заявку</button>
         </div>
       </div>
-
-      <div id="cms-users" class="hidden">
-        <div class="cms-title">Пользователи CMS</div>
-        <div class="cms-panel">
-          <h3>Добавить пользователя</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Логин</label>
-              <input class="form-control" type="text" id="u-login" placeholder="new_user">
-            </div>
-            <div class="form-group">
-              <label>Пароль</label>
-              <input class="form-control" type="password" id="u-pass" placeholder="••••••••">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Роль</label>
-            <select class="form-control" id="u-role">
-              <option value="editor">Редактор</option>
-              <option value="admin">Администратор</option>
-            </select>
-          </div>
-          <div class="form-actions">
-            <button class="btn btn-primary" onclick="addUser()">Добавить</button>
-          </div>
-          <div class="alert alert-ok hidden" id="u-ok">✓ Пользователь добавлен</div>
-          <div class="alert alert-err hidden" id="u-err">Ошибка</div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Логин</th><th>Роль</th><th>Дата</th><th>Действия</th></tr></thead>
-            <tbody id="u-tbody"></tbody>
-          </table>
-        </div>
+    </div>
+    
+    <!-- СТАТУС ЗАЯВКИ -->
+    <div class="app-form-card" style="margin-top:40px; border-top:2px solid var(--border); padding-top:40px;">
+      <h2>🔍 Проверить статус заявки</h2>
+      <p class="subtitle" style="margin-bottom:20px;">Введите номер вашей заявки, чтобы узнать её статус</p>
+      
+      <div class="form-group">
+        <label>Номер заявки</label>
+        <input class="form-control" type="text" id="status-check-number" placeholder="Например: 42320" style="font-size:16px; padding:12px;">
       </div>
-    </main>
+      
+      <button class="btn btn-primary" onclick="checkApplicationStatus()" style="width:100%; margin-bottom:20px;">🔍 Проверить статус</button>
+      
+      <div id="status-result" style="display:none; padding:20px; border-radius:var(--radius-lg); margin-top:20px;">
+        <div id="status-content"></div>
+      </div>
+    </div>
   </div>
 </div>
 
+<div class="page" id="page-cms"><div class="cms-layout"><aside class="cms-sidebar"><button class="cms-nav-btn active" data-cms="achievements" onclick="cmsSection('achievements')"><span>🏆</span><span>Достижения</span></button><button class="cms-nav-btn" data-cms="report" onclick="cmsSection('report')"><span>📊</span><span>Отчёты</span></button><button class="cms-nav-btn" data-cms="users" onclick="cmsSection('users')"><span>👥</span><span>Пользователи</span></button><button class="cms-nav-btn" data-cms="applications" onclick="cmsSection('applications')"><span>📝</span><span>Заявки</span></button><button class="cms-nav-btn" data-cms="cert-issue" onclick="cmsSection('cert-issue')"><span>📄</span><span>Справки</span></button><button class="cms-nav-btn" data-cms="cert-log" onclick="cmsSection('cert-log')"><span>📋</span><span>Журнал справок</span></button><div style="flex:1;"></div><button class="cms-nav-btn" onclick="doLogout()"><span>🚪</span><span>Выход</span></button></aside><main class="cms-main"><div id="cms-achievements"><div class="cms-title">Управление достижениями</div><div class="cms-panel"><h3>Добавить новое достижение</h3><div class="form-row"><div class="form-group"><label>Кафедра</label><select class="form-control" id="a-dept"><option value="epp">Экономики промышленных предприятий</option><option value="apk">Экономики АПК</option><option value="ou">Организации и управления</option><option value="negu">Национальной экономики</option></select></div><div class="form-group"><label>Тип</label><select class="form-control" id="a-type"><option>Конференция</option><option>Олимпиада</option><option>Публикация</option><option>Грант / Конкурс</option></select></div></div><div class="form-group"><label>Название работы</label><input class="form-control" type="text" id="a-title"></div><div class="form-group"><label>Описание</label><textarea class="form-control" id="a-desc" style="min-height:80px;"></textarea></div><div class="form-row"><div class="form-group"><label>Автор</label><input class="form-control" type="text" id="a-author"></div><div class="form-group"><label>Группа (напр. 25ДКС-1)</label><input class="form-control" type="text" id="a-group" placeholder="25ДКС-1"></div></div><div class="form-row"><div class="form-group"><label>Год</label><input class="form-control" type="text" id="a-year"></div><div class="form-group"></div></div><div class="form-group"><label>Научный руководитель</label><input class="form-control" type="text" id="a-sup"></div><div class="form-group"><label>Ссылка на материалы</label><input class="form-control" type="url" id="a-link"></div><button class="btn btn-primary" onclick="saveAchievement()">Сохранить</button></div></div><div id="cms-report" class="hidden"><div class="cms-title">Отчёты</div><div class="cms-panel"><h3>Годовой отчёт</h3><div class="form-group"><label>Год</label><select class="form-control" id="report-year"></select></div><button class="btn btn-primary" onclick="generateYearReportPDF()">📄 Скачать PDF</button></div></div><div id="cms-users" class="hidden"><div class="cms-title">Пользователи CMS</div><div class="cms-panel"><h3>Добавить пользователя</h3><div class="form-row"><div class="form-group"><label>Логин</label><input class="form-control" type="text" id="u-login"></div><div class="form-group"><label>Пароль</label><input class="form-control" type="password" id="u-pass"></div></div><div class="form-row"><div class="form-group"><label>ФИО</label><input class="form-control" type="text" id="u-fio" placeholder="Иванов Иван Иванович"></div><div class="form-group"><label>Должность</label><input class="form-control" type="text" id="u-position" placeholder="Заместитель декана"></div></div><div class="form-group"><label>Роль</label><select class="form-control" id="u-role"><option value="editor">Редактор (актив СНО)</option><option value="admin">Администратор</option></select></div><button class="btn btn-primary" onclick="addUser()" style="margin-top:8px;">Добавить пользователя</button></div><div class="cms-panel" style="margin-top:0;"><h3>Список пользователей</h3><div id="users-list-wrap"><button class="btn" onclick="loadUsersList()" style="background:var(--border);color:var(--text);font-size:13px;">🔄 Загрузить список</button></div></div></div><div id="cms-applications" class="hidden"><div class="cms-title">Заявки студентов</div><div class="cms-panel" style="padding:0; overflow:hidden;"><div style="padding:20px 24px; border-bottom:1px solid var(--border); display:flex; gap:12px; align-items:center; flex-wrap:wrap;"><select class="form-control" id="apps-filter-status" style="width:180px;" onchange="renderApplicationsTable()"><option value="">Все статусы</option><option value="new">Новые</option><option value="review">На рассмотрении</option><option value="approved">Одобрено</option><option value="rejected">Отклонено</option></select><span id="apps-count" style="font-size:13px; color:var(--text-light);"></span><button class="btn btn-primary" onclick="fetchApplications().then(renderApplicationsTable)" style="margin-left:auto; padding:8px 16px; font-size:13px;">🔄 Обновить</button></div><div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse;" id="apps-table"><thead><tr><th style="width:40px;"></th><th>№ Заявки</th><th>ФИО</th><th>Группа</th><th>Тип</th><th>Дата</th><th>Статус</th><th>Действия</th></tr></thead><tbody id="apps-tbody"></tbody></table></div></div></div>
+
+<div id="cms-cert-issue" class="hidden">
+  <div class="cms-title">Сформировать справку</div>
+  <div class="cms-panel">
+    <h3>Выбор достижения из реестра</h3>
+    <p style="font-size:13px; color:var(--text-light); margin-bottom:20px;">Найдите нужное достижение по ФИО или названию, затем заполните данные для справки.</p>
+    <div style="display:flex; gap:12px; margin-bottom:16px;">
+      <input class="form-control" type="text" id="ci-search" placeholder="ФИО автора, название работы, реестровый №..." style="flex:1;" oninput="ciFilterAchievements()">
+    </div>
+    <div id="ci-results" style="max-height:280px; overflow-y:auto; border:1.5px solid var(--border); border-radius:var(--radius); margin-bottom:24px; background:var(--bg);">
+      <div style="padding:20px; text-align:center; color:var(--text-lighter); font-size:13px;">Начните вводить для поиска</div>
+    </div>
+    <div id="ci-selected-info" style="display:none; background:var(--accent-pale); border:1px solid rgba(211,47,47,0.25); border-radius:var(--radius); padding:14px 16px; margin-bottom:20px; font-size:13px; color:var(--text);">
+      <strong style="color:var(--accent);">✓ Выбрано:</strong> <span id="ci-selected-title"></span><br>
+      <span style="color:var(--text-light);">Автор: </span><span id="ci-selected-author"></span> &nbsp;|&nbsp;
+      <span style="color:var(--text-light);">№ реестра: </span><span id="ci-selected-num" style="font-weight:700; color:var(--accent);"></span>
+    </div>
+  </div>
+
+  <div class="cms-panel" id="ci-form-panel" style="display:none;">
+    <h3>Данные для справки</h3>
+    <div style="background:var(--accent-pale); border:1px solid rgba(211,47,47,0.2); border-radius:var(--radius); padding:12px 16px; font-size:13px; color:var(--accent); margin-bottom:20px;">
+      ✏️ Введите данные в необходимых падежах (Р.п. - кого?, Д.п. - кому?)
+    </div>
+    <div class="form-row" style="margin-bottom:16px;">
+      <div class="form-group">
+        <label>ФИО автора (дательный падеж) *</label>
+        <input class="form-control" id="ci-author-gen" placeholder="Иванова Ивана Ивановича">
+        <div style="font-size:11px; color:var(--text-lighter); margin-top:4px;">Из реестра: <span id="ci-author-orig" style="font-style:italic;"></span></div>
+      </div>
+      <div class="form-group">
+        <label>ФИО научного руководителя (родительный падеж) *</label>
+        <input class="form-control" id="ci-sup-gen" placeholder="Петрова Петра Петровича">
+        <div style="font-size:11px; color:var(--text-lighter); margin-top:4px;">Из реестра: <span id="ci-sup-orig" style="font-style:italic;"></span></div>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:20px;">
+      <label>Должность руководителя (родительный падеж) *</label>
+      <input class="form-control" id="ci-sup-post" placeholder="доцента кафедры экономики промышленных предприятий, к.э.н.">
+    </div>
+    <div style="display:flex; gap:12px;">
+      <button class="btn btn-primary" onclick="ciPreviewCert()" style="flex:1;">👁 Предпросмотр справки</button>
+    </div>
+  </div>
+
+  <div class="cms-panel" id="ci-preview-panel" style="display:none;">
+    <h3>Предпросмотр справки</h3>
+    <div id="ci-preview-body" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:20px;"></div>
+    <div style="display:flex; gap:12px;">
+      <button class="btn btn-primary" onclick="ciDownloadPDF()" style="flex:1;">🖨 Распечатать / PDF + Записать в журнал</button>
+      <button class="btn" onclick="document.getElementById('ci-preview-panel').style.display='none'; document.getElementById('ci-form-panel').style.display='';" style="flex:0.5; background:var(--border); color:var(--text);">← Изменить</button>
+    </div>
+  </div>
+</div></main></div></div>
+
+<!-- CERT LOG SECTION injected into CMS via JS -->
+
 <script>
-let sb = null, rtChannel = null;
-let achievements = [], deptInfo = [], users = [], currentUser = null;
-
-const DEPT_NAMES = {
-  epp: 'Экономики промышленных предприятий',
-  apk: 'Экономики АПК и природопользования',
-  ou: 'Организации и управления',
-  negu: 'Национальной экономики и государственного управления'
-};
+const SUPABASE_URL = 'https://uwswqesvzfacwqvmmvct.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3c3dxZXN2emZhY3dxdm1tdmN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NDAzMDIsImV4cCI6MjA4OTQxNjMwMn0.DnovJ0i6dhzEzFtp-uRhecAGVtYenIE4kohGcLhMVGo';
+let sb = null, achievements = [], currentUser = null, currentCertAchievement = null;
+const DEPT_NAMES = { epp: 'Экономики промышленных предприятий', apk: 'Экономики АПК и природопользования', ou: 'Организации и управления', negu: 'Национальной экономики и государственного управления' };
 const DEPT_SHORT = { epp: 'ЭПП', apk: 'АПКиП', ou: 'ОиУ', negu: 'НЭиГУ' };
-const TYPE_CLASS = { 'Олимпиада': 'gold', 'Публикация': 'blue', 'Грант / Конкурс': 'green', 'Диплом / Награда': 'brown' };
 
-function initSupabase() {
-  try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); return true; }
-  catch(e) { return false; }
+function initSupabase() { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); }
+async function fetchAchievements() { const { data } = await sb.from('achievements').select('*').order('created_at', { ascending: false }); achievements = data || []; return achievements; }
+
+let applications = [];
+
+async function init() { initSupabase(); await fetchAchievements(); renderHome(); }
+
+function toggleMobileNav() {
+  const nav = document.getElementById('mobile-nav');
+  const burger = document.getElementById('burger-btn');
+  nav.classList.toggle('open');
+  burger.classList.toggle('open');
+}
+function closeMobileNav() {
+  document.getElementById('mobile-nav').classList.remove('open');
+  document.getElementById('burger-btn').classList.remove('open');
 }
 
-async function fetchAll() {
-  const [achRes, diRes] = await Promise.all([
-    sb.from('achievements').select('*').order('created_at', { ascending: false }),
-    sb.from('dept_info').select('*')
-  ]);
-  achievements = achRes.data || [];
-  deptInfo = {};
-  (diRes.data || []).forEach(r => { deptInfo[r.dept_key] = r; });
-  if (currentUser?.role === 'admin') {
-    const { data } = await sb.from('cms_users').select('*').order('created_at');
-    users = data || [];
-  }
+// Sync auth button in mobile nav
+function syncAuthBtns() {
+  const label = currentUser ? 'CMS' : 'Войти';
+  const ab = document.getElementById('auth-btn');
+  const abm = document.getElementById('auth-btn-mobile');
+  if(ab) ab.textContent = label;
+  if(abm) abm.textContent = label;
 }
-
-async function fetchAchievements() {
-  const { data } = await sb.from('achievements').select('*').order('created_at', { ascending: false });
-  achievements = data || [];
-}
-
-function startRealtime() {
-  if (rtChannel) sb.removeChannel(rtChannel);
-  rtChannel = sb.channel('public-updates')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'achievements' }, async () => {
-      await fetchAchievements(); refreshCurrentPage();
-    })
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'dept_info' }, async () => {
-      const { data } = await sb.from('dept_info').select('*');
-      deptInfo = {};
-      (data || []).forEach(r => { deptInfo[r.dept_key] = r; });
-      refreshCurrentPage();
-    })
-    .subscribe(status => {
-      const dot = document.getElementById('rt-dot');
-      const txt = document.getElementById('rt-text');
-      if (!dot || !txt) return;
-      if (status === 'SUBSCRIBED') {
-        dot.classList.add('live');
-        txt.textContent = 'Realtime';
-      } else {
-        dot.classList.remove('live');
-        txt.textContent = 'Переподключение...';
-      }
-    });
-}
-
-let currentPage = 'home', currentDept = null;
-function refreshCurrentPage() {
-  if (currentPage === 'home') renderHome();
-  else if (currentPage === 'dept') renderDeptPage(currentDept);
-  else if (currentPage === 'cms') { 
-    renderAchieveTable(); 
-    if (document.getElementById('cms-certlog') && !document.getElementById('cms-certlog').classList.contains('hidden')) loadCertLog();
-    if (document.getElementById('cms-report') && !document.getElementById('cms-report').classList.contains('hidden')) updateReportYearSelect();
-  }
-}
-
 function nav(page, deptKey) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('[data-page]').forEach(b => b.classList.remove('active'));
-  currentPage = page; currentDept = deptKey || null;
-  if (page === 'home') {
-    document.getElementById('page-home').classList.add('active');
-    document.querySelector('[data-page="home"]').classList.add('active');
-    renderHome();
-  } else if (page === 'dept') {
-    document.getElementById('page-dept').classList.add('active');
-    const btn = document.querySelector(`[data-page="dept-${deptKey}"]`);
-    if (btn) btn.classList.add('active');
-    renderDeptPage(deptKey);
-  } else if (page === 'cms') {
-    if (!currentUser) { openLogin(); return; }
-    document.getElementById('page-cms').classList.add('active');
-    renderCMSAll();
-  }
-  window.scrollTo(0, 0);
+  currentPage = page;
+  if (page === 'home') { document.getElementById('page-home').classList.add('active'); document.querySelector('[data-page="home"]')?.classList.add('active'); renderHome(); }
+  else if (page === 'dept') { document.getElementById('page-dept').classList.add('active'); renderDeptPage(deptKey); }
+  else if (page === 'apply') { document.getElementById('page-apply').classList.add('active'); document.querySelector('[data-page="apply"]')?.classList.add('active'); generateAppNumber(); if(!document.querySelector('.achievement-block')){ achievementBlockCount=0; addAchievementBlock(); } }
+  else if (page === 'cms') { if (!currentUser) { openLogin(); return; } document.getElementById('page-cms').classList.add('active'); fetchApplications().then(renderApplicationsTable); }
+  window.scrollTo(0,0);
 }
-
-// --- поиск ---
-let searchActive = false, searchResults = [];
-
+function renderHome() {
+  document.getElementById('stat-total').textContent = achievements.length;
+  const counts = {}; achievements.forEach(a => counts[a.dept] = (counts[a.dept]||0)+1);
+  document.getElementById('home-dept-grid').innerHTML = Object.keys(DEPT_NAMES).map((k,i)=>`<div class="dept-card" onclick="nav('dept','${k}')"><div class="dept-num">0${i+1}</div><p>${DEPT_NAMES[k]}</p><div class="dept-footer"><div class="dept-count">${counts[k]||0} работ</div><div class="dept-arrow">→</div></div></div>`).join('');
+  const recent = achievements.slice(0,6);
+  document.getElementById('home-cards').innerHTML = recent.map(a=>`<div class="card" onclick="openAchievementModal(${a.id})"><div style="display:flex; align-items:center; gap:10px;"><div class="card-badge">${a.type}</div>${a.unique_number?`<span style="font-family:var(--font-serif); font-size:13px; font-weight:700; color:var(--accent); background:var(--accent-pale); padding:4px 10px; border-radius:4px;">№ ${a.unique_number}</span>`:''}</div><h3>${escapeHtml(a.title)}</h3><p>${escapeHtml(a.description)}</p><div class="card-footer"><div class="card-author">${escapeHtml(a.author)}</div><div>${a.year} • ${DEPT_SHORT[a.dept]}</div></div></div>`).join('');
+  document.getElementById('achievements-count').textContent = `Всего: ${achievements.length} достижений`;
+}
+function renderDeptPage(key) {
+  const deptAch = achievements.filter(a => a.dept === key);
+  document.getElementById('page-dept').innerHTML = `<div style="background:linear-gradient(135deg,#003366,#004d99); color:white; padding:64px 32px; border-bottom:6px solid #d32f2f;"><button class="nav-btn" onclick="nav('home')" style="color:white; margin-bottom:24px; background:rgba(255,255,255,0.15);">← Назад</button><h1 style="font-family:Lora; font-size:42px;">${DEPT_NAMES[key]}</h1><p>Научные достижения студентов</p></div><div class="section"><div class="section-header"><h2>Все достижения (${deptAch.length})</h2></div><div class="cards-grid">${deptAch.map(a=>`<div class="card" onclick="openAchievementModal(${a.id})"><div class="card-badge">${a.type}</div><h3>${escapeHtml(a.title)}</h3><p>${escapeHtml(a.description)}</p><div class="card-footer"><div class="card-author">${escapeHtml(a.author)}</div>${a.supervisor?`<div>Рук: ${escapeHtml(a.supervisor)}</div>`:''}<div>${a.year}</div></div></div>`).join('')}</div></div><footer><p>${DEPT_NAMES[key]}</p></footer>`;
+}
 function performSearch() {
-  const query = document.getElementById('search-query').value.trim().toLowerCase();
+  const query = document.getElementById('search-query').value.trim();
+  const queryLow = query.toLowerCase();
   const type = document.getElementById('search-type').value;
   const dept = document.getElementById('search-dept').value;
-  if (!query && !type && !dept) { resetSearch(); return; }
-  searchActive = true;
-  searchResults = achievements.filter(a => {
-    let match = true;
-    if (query) { const t = `${a.unique_number||''} ${a.author} ${a.title} ${a.description}`.toLowerCase(); match = match && t.includes(query); }
-    if (type) match = match && a.type === type;
-    if (dept) match = match && a.dept === dept;
-    return match;
+  const results = achievements.filter(a => {
+    const matchQuery = !query || 
+      (a.title||'').toLowerCase().includes(queryLow) ||
+      (a.author||'').toLowerCase().includes(queryLow) ||
+      (a.description||'').toLowerCase().includes(queryLow) ||
+      String(a.unique_number||'').toLowerCase().includes(queryLow);
+    return matchQuery && (!type || a.type===type) && (!dept || a.dept===dept);
   });
-  renderSearchResults();
-}
-
-function resetSearch() {
-  searchActive = false; searchResults = [];
-  document.getElementById('search-query').value = '';
-  document.getElementById('search-type').value = '';
-  document.getElementById('search-dept').value = '';
-  document.getElementById('search-results-info').classList.add('hidden');
-  renderHome();
-}
-
-function renderSearchResults() {
-  const container = document.getElementById('home-cards');
-  document.getElementById('search-results-info').classList.remove('hidden');
-  document.getElementById('search-results-count').textContent = searchResults.length;
-  document.getElementById('achievements-section-title').textContent = 'Результаты поиска';
-  document.getElementById('home-ach-count').textContent = searchResults.length;
-  container.innerHTML = searchResults.length
-    ? searchResults.map(achievCard).join('')
-    : `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔍</div><p>По вашему запросу ничего не найдено</p><button class="search-btn reset" onclick="resetSearch()" style="margin-top:16px;">Сбросить фильтры</button></div>`;
-}
-
-function renderHome() {
-  if (searchActive) { renderSearchResults(); return; }
-  document.getElementById('stat-total').textContent = achievements.length;
-  const years = achievements.map(a => parseInt(a.year)).filter(Boolean);
-  document.getElementById('stat-year').textContent = years.length ? Math.max(...years) : '—';
-  const counts = {};
-  achievements.forEach(a => { counts[a.dept] = (counts[a.dept] || 0) + 1; });
-  document.getElementById('home-dept-grid').innerHTML = Object.keys(DEPT_NAMES).map((k, i) => `
-    <div class="dept-card" onclick="nav('dept','${k}')">
-      <div class="dept-num">0${i+1} / КАФЕДРА</div>
-      <h3>${esc(DEPT_NAMES[k])}</h3>
-      <p>${esc((deptInfo[k]?.short_desc) || 'Информация о кафедре')}</p>
-      <div class="dept-card-footer">
-        <span class="dept-ach-count">${counts[k] || 0} достижений</span>
-        <div class="dept-arrow">→</div>
-      </div>
-    </div>`).join('');
-  const recent = achievements.slice(0, 4);
-  document.getElementById('achievements-section-title').textContent = 'Последние добавленные достижения';
-  document.getElementById('home-ach-count').textContent = achievements.length;
-  document.getElementById('search-results-info').classList.add('hidden');
-  document.getElementById('home-cards').innerHTML = recent.length
-    ? recent.map(achievCard).join('')
-    : `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔬</div><p>Достижения появятся здесь после добавления</p></div>`;
-}
-
-function achievCard(a) {
-  const tc = TYPE_CLASS[a.type] || '';
-  return `<div class="card" onclick="openAchievementModal(${a.id})">
-    <div class="card-meta">
-      ${a.unique_number ? `<span class="unique-num-badge">${esc(a.unique_number)}</span>` : ''}
-      <span class="card-year">${esc(a.year)}</span>
-      <span class="tag ${tc}">${esc(a.type)}</span>
-      <span class="tag">${DEPT_SHORT[a.dept] || a.dept}</span>
+  document.getElementById('home-cards').innerHTML = results.map(a=>`<div class="card" onclick="openAchievementModal(${a.id})">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+      <div class="card-badge">${a.type}</div>
+      ${a.unique_number?`<span style="font-family:var(--font-serif);font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-pale);padding:3px 9px;border-radius:4px;">№ ${a.unique_number}</span>`:''}
     </div>
-    <h3>${esc(a.title)}</h3>
-    <p>${esc(a.description)}</p>
-    <div class="card-footer">
-      <div class="card-author">${esc(a.author)}</div>
-      ${a.supervisor ? `<div class="card-supervisor">Рук.: ${esc(a.supervisor)}</div>` : ''}
-    </div>
-    ${a.link ? `<a class="card-link" href="${esc(a.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ Открыть вложение</a>` : ''}
-  </div>`;
+    <h3>${escapeHtml(a.title)}</h3>
+    <p>${escapeHtml(a.description)}</p>
+    <div class="card-footer"><div class="card-author">${escapeHtml(a.author)}</div><div>${a.year}</div></div>
+  </div>`).join('');
+  document.getElementById('achievements-title').textContent = `Результаты поиска (${results.length})`;
 }
-
-function renderDeptPage(key) {
-  const info = deptInfo[key] || {};
-  const name = DEPT_NAMES[key];
-  const deptAch = achievements.filter(a => a.dept === key);
-  const byType = {};
-  deptAch.forEach(a => { (byType[a.type] = byType[a.type] || []).push(a); });
-  const types = Object.keys(byType);
-  document.getElementById('page-dept').innerHTML = `
-    <div class="dept-header">
-      <button class="back-btn" onclick="nav('home')">← Главная</button>
-      <div class="eyebrow">Кафедра</div>
-      <h1>${esc(name)}</h1>
-      <p>${esc(info.description || 'Описание кафедры.')}</p>
-      ${info.head_name ? `<div class="head-label">Заведующий: ${esc(info.head_name)}</div>` : ''}
-    </div>
-    <div class="tabs-bar">
-      <button class="tab-btn active" onclick="dTab(this,'td-sci')">Научная деятельность</button>
-      <button class="tab-btn" onclick="dTab(this,'td-snil')">СНИЛ — Все достижения</button>
-      ${types.map(t => `<button class="tab-btn" onclick="dTab(this,'td-${slug(t)}')">
-        ${esc(t)} <span style="opacity:.5">(${byType[t].length})</span></button>`).join('')}
-    </div>
-    <div class="tab-content active" id="td-sci">
-      <div class="section">
-        <div class="section-header"><h2>О научной деятельности</h2></div>
-        <p style="color:var(--muted);max-width:760px;line-height:1.8;margin-bottom:32px">${esc(info.description || '')}</p>
-        ${info.snilDesc ? `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:32px;max-width:760px">
-          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">СНИЛ</div>
-          <p style="color:var(--muted);font-size:14px">${esc(info.snilDesc)}</p></div>` : ''}
-        <div class="section-header"><h2>Последние добавленные достижения кафедры</h2></div>
-        <div class="cards-grid">${deptAch.slice(0,3).map(achievCard).join('') || emptyState('Нет данных')}</div>
-      </div>
-    </div>
-    <div class="tab-content" id="td-snil">
-      <div class="section">
-        <div class="section-header"><h2>Достижения СНИЛ</h2><span class="count">${deptAch.length}</span></div>
-        <div class="cards-grid">${deptAch.map(achievCard).join('') || emptyState('Нет достижений')}</div>
-      </div>
-    </div>
-    ${types.map(t => `
-    <div class="tab-content" id="td-${slug(t)}">
-      <div class="section">
-        <div class="section-header"><h2>${esc(t)}</h2><span class="count">${byType[t].length}</span></div>
-        <div class="cards-grid">${byType[t].map(achievCard).join('')}</div>
-      </div>
-    </div>`).join('')}
-    <footer>
-      <div class="f-brand">БГЭУ · Кафедра ${esc(name)} · Реестр научных достижений студентов</div>
-      <p>Факультет экономики и менеджмента</p>
-    </footer>`;
+function openAchievementModal(id) {
+  const a = achievements.find(x => x.id === id);
+  if(!a) return;
+  currentCertAchievement = a;
+  document.getElementById('modal-title').textContent = a.title;
+  document.getElementById('modal-meta').innerHTML = `<div class="modal-meta-item"><strong>${a.year}</strong></div><div class="modal-meta-item"><strong>${DEPT_SHORT[a.dept]}</strong></div><div class="modal-meta-item"><strong>${a.type}</strong></div>`;
+  let body = `<div class="modal-section"><div class="modal-section-title">Описание</div><div class="modal-section-content">${escapeHtml(a.description)}</div></div><div class="modal-section"><div class="modal-section-title">Автор</div><div class="modal-section-content">${escapeHtml(a.author)}</div></div>`;
+  if(a.supervisor) body += `<div class="modal-section"><div class="modal-section-title">Научный руководитель</div><div class="modal-section-content">${escapeHtml(a.supervisor)}</div></div>`;
+  if(a.link) body += `<div class="modal-section"><div class="modal-section-title">Материалы</div><a class="modal-link" href="${a.link}" target="_blank">↗ Открыть</a></div>`;
+  if(a.unique_number) body = `<div class="modal-section" style="margin-bottom:20px; border-bottom:2px solid var(--accent);"><div style="font-size:24px; font-weight:700; color:var(--accent);">№ ${a.unique_number}</div><div>Реестровый номер</div></div>` + body;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('achievement-modal').classList.add('active');
 }
-
-function dTab(btn, id) {
-  document.querySelectorAll('#page-dept .tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('#page-dept .tab-content').forEach(tc => tc.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById(id)?.classList.add('active');
-}
-
+function closeAchievementModal() { document.getElementById('achievement-modal').classList.remove('active'); }
 function openLogin() { document.getElementById('login-overlay').classList.remove('hidden'); }
-function closeLogin() { document.getElementById('login-overlay').classList.add('hidden'); }
 function handleAuthBtn() { currentUser ? nav('cms') : openLogin(); }
-
 async function doLogin() {
   const login = document.getElementById('l-user').value.trim();
   const pass = document.getElementById('l-pass').value;
-  const { data, error } = await sb.from('cms_users').select('*').eq('login', login).eq('password', pass).maybeSingle();
-  if (data && !error) {
-    currentUser = data;
-    if (!currentUser.full_name) {
-      if (currentUser.login === 'nevda.asa') currentUser.full_name = 'Невдах А.С., секретарь СНО ФЭМ';
-      else currentUser.full_name = currentUser.login;
-    }
-    closeLogin();
-    document.getElementById('auth-btn').textContent = 'CMS →';
-    document.getElementById('auth-btn').onclick = () => nav('cms');
-    nav('cms');
-  } else {
-    document.getElementById('l-err').classList.remove('hidden');
-    setTimeout(() => document.getElementById('l-err').classList.add('hidden'), 3000);
-  }
+  const { data } = await sb.from('cms_users').select('*').eq('login', login).eq('password', pass).maybeSingle();
+  if(data) { currentUser = data; document.getElementById('login-overlay').classList.add('hidden'); syncAuthBtns(); nav('cms'); }
+  else alert('Неверный логин или пароль');
 }
-
-function doLogout() {
-  currentUser = null;
-  document.getElementById('auth-btn').textContent = 'Войти';
-  document.getElementById('auth-btn').onclick = handleAuthBtn;
-  nav('home');
-}
-
-document.getElementById('l-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-
+function doLogout() { currentUser = null; syncAuthBtns(); nav('home'); }
 function cmsSection(name) {
-  document.querySelectorAll('.cms-nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`[data-cms="${name}"]`).classList.add('active');
-  ['achievements','deptinfo','report','certlog','users'].forEach(s => {
-    const el = document.getElementById(`cms-${s}`);
-    if (el) el.classList.toggle('hidden', s !== name);
-  });
-  if (name === 'deptinfo') renderDeptInfoPanels();
-  if (name === 'users') renderUsersTable();
-  if (name === 'certlog') loadCertLog();
-  if (name === 'report') updateReportYearSelect();
-}
-
-function renderCMSAll() {
-  document.getElementById('cms-username').textContent = currentUser?.full_name || (currentUser?.login || '—');
-  renderAchieveTable();
-}
-
-function renderAchieveTable() {
-  const tbody = document.getElementById('a-tbody');
-  tbody.innerHTML = achievements.length
-    ? achievements.map(a => `<tr>
-          <td><span class="unique-num-badge">${esc(a.unique_number || '—')}</span></td>
-        <td class="mono" style="color:var(--muted);white-space:nowrap">${esc(a.year)}</td>
-        <td><span class="tag">${DEPT_SHORT[a.dept]||a.dept}</span></td>
-        <td><span class="tag ${TYPE_CLASS[a.type]||''}">${esc(a.type)}</span></td>
-        <td style="max-width:280px;font-size:13px">${esc(a.title)}</td>
-        <td style="color:var(--muted);white-space:nowrap">${esc(a.author)}</td>
-        <td><div class="td-actions">
-          <button class="btn btn-secondary btn-sm" onclick="editAch(${a.id})">✏ Ред.</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteAch(${a.id})">🗑</button>
-        </div></td>
-      </tr>`).join('')
-    : `<tr><td colspan="7">${emptyState('Нет записей')}</td></tr>`;
-}
-
-async function saveAchievement() {
-  const title = document.getElementById('a-title').value.trim();
-  if (!title) { alert('Введите заголовок'); return; }
-  const obj = {
-    dept: document.getElementById('a-dept').value,
-    type: document.getElementById('a-type').value,
-    title, description: document.getElementById('a-desc').value.trim(),
-    author: document.getElementById('a-author').value.trim(),
-    year: document.getElementById('a-year').value.trim(),
-    supervisor: document.getElementById('a-sup').value.trim(),
-    link: document.getElementById('a-link').value.trim() || null
-  };
-  const editId = document.getElementById('a-edit-id').value;
-  let err;
-  if (editId) { ({ error: err } = await sb.from('achievements').update(obj).eq('id', editId)); }
-  else { ({ error: err } = await sb.from('achievements').insert(obj)); }
-  if (err) { showA('a-err'); console.error(err); return; }
-  cancelEdit(); showA('a-ok');
-}
-
-function editAch(id) {
-  const a = achievements.find(x => x.id === id);
-  if (!a) return;
-  document.getElementById('a-edit-id').value = id;
-  document.getElementById('a-dept').value = a.dept;
-  document.getElementById('a-type').value = a.type;
-  document.getElementById('a-title').value = a.title;
-  document.getElementById('a-desc').value = a.description;
-  document.getElementById('a-author').value = a.author;
-  document.getElementById('a-year').value = a.year;
-  document.getElementById('a-sup').value = a.supervisor || '';
-  document.getElementById('a-link').value = a.link || '';
-  if (a.unique_number) {
-    document.getElementById('a-unique-num').value = a.unique_number;
-    document.getElementById('a-num-group').classList.remove('hidden');
-  }
-  document.getElementById('a-form-title').textContent = 'Редактировать достижение';
-  document.querySelector('.cms-panel').scrollIntoView({ behavior: 'smooth' });
-}
-
-async function deleteAch(id) {
-  if (!confirm('Удалить достижение?')) return;
-  await sb.from('achievements').delete().eq('id', id);
-}
-
-// ========== Журнал справок (только для сотрудников) ==========
-let certLogAvailable = true;
-let certLogChecked = false;
-let certLogData = [];
-let certSearchNumber = '', certSearchStudent = '';
-
-async function checkCertLogTable() {
-  if (certLogChecked) return certLogAvailable;
-  try {
-    const { error } = await sb.from('certificate_log').select('id').limit(1);
-    if (error && (error.code === '42P01' || error.code === '42501')) {
-      certLogAvailable = false;
-      console.warn('Таблица certificate_log недоступна (RLS или отсутствует).');
-    } else {
-      certLogAvailable = true;
-    }
-  } catch(e) {
-    certLogAvailable = false;
-  }
-  certLogChecked = true;
-  return certLogAvailable;
-}
-
-async function loadCertLog() {
-  if (!currentUser) return;
-  const available = await checkCertLogTable();
-  if (!available) {
-    renderCertLogTable(true);
+  document.querySelectorAll('.cms-nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[data-cms="${name}"]`)?.classList.add('active');
+  document.querySelectorAll('[id^="cms-"]').forEach(el=>el.classList.add('hidden'));
+  if(name === 'cert-log') {
+    renderCertLogSection();
     return;
   }
-  try {
-    let query = sb.from('certificate_log').select('*').order('created_at', { ascending: false });
-    if (certSearchNumber) query = query.ilike('cert_number', `%${certSearchNumber}%`);
-    if (certSearchStudent) query = query.ilike('student_name', `%${certSearchStudent}%`);
-    const { data, error } = await query;
-    if (error) throw error;
-    certLogData = data || [];
-    renderCertLogTable();
-  } catch (err) {
-    console.error('Ошибка загрузки журнала справок:', err);
-    certLogData = [];
-    renderCertLogTable(true);
-  }
-}
-
-function renderCertLogTable(tableMissing = false) {
-  const tbody = document.getElementById('cert-log-tbody');
-  if (!tbody) return;
-  if (tableMissing) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">
-      <div class="icon">⚠️</div>
-      <p>Таблица "certificate_log" не найдена или недоступна.</p>
-      <p style="font-size:12px; margin-top:8px;">Выполните SQL-скрипт для её создания (вкладка SQL Editor):</p>
-      <pre style="background:#f5f2eb; padding:8px; margin-top:8px; font-size:11px; text-align:left;">
-CREATE TABLE IF NOT EXISTS certificate_log (
-  id BIGSERIAL PRIMARY KEY,
-  cert_number TEXT NOT NULL UNIQUE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  student_name TEXT NOT NULL,
-  student_group TEXT,
-  achievement_ids INTEGER[],
-  achievement_numbers TEXT[],
-  generated_by TEXT,
-  details JSONB
-);
-ALTER TABLE certificate_log DISABLE ROW LEVEL SECURITY;
-CREATE INDEX IF NOT EXISTS idx_cert_number ON certificate_log(cert_number);
-      </pre>
-    </div></td></tr>`;
+  if(name === 'cert-issue') {
+    document.getElementById('cms-cert-issue')?.classList.remove('hidden');
+    ciFilterAchievements();
     return;
   }
-  if (!certLogData.length) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">Нет записей в журнале</div></td></tr>`;
-    return;
+  document.getElementById(`cms-${name}`)?.classList.remove('hidden');
+  if(name==='report') updateReportYears();
+  if(name==='applications') fetchApplications().then(renderApplicationsTable);
+  if(name==='users') loadUsersList();
+}
+
+function renderCertLogSection() {
+  // Find or create the cert-log div inside cms-main
+  let el = document.getElementById('cms-cert-log');
+  if(!el) {
+    el = document.createElement('div');
+    el.id = 'cms-cert-log';
+    document.querySelector('.cms-main').appendChild(el);
   }
-  tbody.innerHTML = certLogData.map(entry => `
-    <tr>
-      <td><span class="unique-num-badge" style="background:rgba(26,58,92,.05);">${esc(entry.cert_number)}</span></td>
-      <td style="white-space:nowrap;">${new Date(entry.created_at).toLocaleDateString('ru')}</td>
-      <td>${esc(entry.student_name)}</td>
-      <td>${esc(entry.student_group || '—')}</td>
-      <td>${entry.achievement_numbers ? entry.achievement_numbers.map(n => `<span class="tag" style="background:var(--bg);">${esc(n)}</span>`).join(' ') : '—'}</td>
-      <td>${entry.achievement_ids?.length || 0}</td>
-      <td>${esc(entry.generated_by === 'nevda.asa' ? 'Невдах А.С., секретарь СНО ФЭМ' : (entry.generated_by || '—'))}</td>
-    </tr>
-  `).join('');
-}
-
-async function searchCertLog() {
-  certSearchNumber = document.getElementById('cert-search-number').value.trim();
-  certSearchStudent = document.getElementById('cert-search-student').value.trim();
-  await loadCertLog();
-}
-
-function resetCertSearch() {
-  document.getElementById('cert-search-number').value = '';
-  document.getElementById('cert-search-student').value = '';
-  certSearchNumber = '';
-  certSearchStudent = '';
+  // Show it
+  document.querySelectorAll('[id^="cms-"]').forEach(e=>e.classList.add('hidden'));
+  el.classList.remove('hidden');
+  el.innerHTML = `
+    <div class="cms-title">Журнал справок</div>
+    <div class="cms-panel" style="padding:0;overflow:hidden;">
+      <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;">
+        <span style="font-size:13px;color:var(--text-light);" id="cert-log-count">Загрузка...</span>
+        <button class="btn btn-primary" onclick="loadCertLog()" style="margin-left:auto;padding:8px 16px;font-size:13px;">🔄 Обновить</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead><tr>
+            <th style="padding:12px 14px;text-align:left;font-size:11px;text-transform:uppercase;color:var(--primary);border-bottom:2px solid var(--border);">№ Справки</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11px;text-transform:uppercase;color:var(--primary);border-bottom:2px solid var(--border);">Кому выдана</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11px;text-transform:uppercase;color:var(--primary);border-bottom:2px solid var(--border);">Достижение</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11px;text-transform:uppercase;color:var(--primary);border-bottom:2px solid var(--border);">№ в реестре</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11px;text-transform:uppercase;color:var(--primary);border-bottom:2px solid var(--border);">Выдал</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11px;text-transform:uppercase;color:var(--primary);border-bottom:2px solid var(--border);">Должность</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11px;text-transform:uppercase;color:var(--primary);border-bottom:2px solid var(--border);">Дата</th>
+          </tr></thead>
+          <tbody id="cert-log-tbody"><tr><td colspan="7" style="padding:24px;text-align:center;color:var(--text-lighter);">Загрузка...</td></tr></tbody>
+        </table>
+      </div>
+    </div>`;
   loadCertLog();
 }
 
-async function exportMonthPDF() {
-  const monthValue = document.getElementById('export-month').value;
-  if (!monthValue) { alert('Выберите год и месяц'); return; }
-  const [year, month] = monthValue.split('-');
-  const monthNames = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
-  const monthName = monthNames[parseInt(month)-1];
-  
-  const available = await checkCertLogTable();
-  if (!available) { alert('Таблица журнала недоступна. Невозможно экспортировать.'); return; }
-  
-  const startDate = new Date(year, month-1, 1);
-  const endDate = new Date(year, month, 0, 23, 59, 59);
-  const { data, error } = await sb
-    .from('certificate_log')
-    .select('*')
-    .gte('created_at', startDate.toISOString())
-    .lte('created_at', endDate.toISOString())
-    .order('created_at', { ascending: true });
-  if (error) { alert('Ошибка загрузки данных'); console.error(error); return; }
-  if (!data || data.length === 0) { alert(`Нет справок за ${monthName} ${year} года`); return; }
-  
-  const dateStr = new Date().toLocaleDateString('ru');
-  const win = window.open('', '_blank', 'width=900,height=700');
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-  <title>Журнал справок за ${monthName} ${year}</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; color: #000; background: #fff; }
-    .page { width: 210mm; min-height: 297mm; padding: 20mm 20mm 20mm 20mm; margin: 0 auto; }
-    h1 { font-size: 16pt; text-align: center; margin-bottom: 4mm; }
-    .subtitle { text-align: center; margin-bottom: 8mm; font-size: 12pt; }
-    table { width: 100%; border-collapse: collapse; margin-top: 5mm; }
-    th, td { border: 1px solid #000; padding: 5px 4px; vertical-align: top; font-size: 10pt; }
-    th { background: #f0f0f0; text-align: center; }
-    .footer { margin-top: 12mm; font-size: 10pt; text-align: right; }
-    .no-print { text-align: center; padding: 6mm; background: #f0f0f0; margin-bottom: 5mm; }
-    .btn-print { padding: 8px 24px; font-size: 13px; background: #1a3a5c; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-right: 8px; }
-    .btn-close { padding: 8px 18px; font-size: 13px; background: #ddd; border: 1px solid #bbb; border-radius: 4px; cursor: pointer; }
-    @media print { .no-print { display: none; } body { margin: 0; } .page { padding: 15mm; } }
-    @page { size: A4; margin: 0; }
-  </style>
-  </head><body>
-  <div class="no-print">
-    <button class="btn-print" onclick="window.print()">🖨 Печать / Сохранить PDF</button>
-    <button class="btn-close" onclick="window.close()">Закрыть</button>
-    <div style="font-size:11px;color:#666;margin-top:6px;">В диалоге печати выберите «Сохранить как PDF»</div>
-  </div>
-  <div class="page">
-    <h1>Белорусский государственный экономический университет</h1>
-    <div class="subtitle">Факультет экономики и менеджмента<br>Журнал выданных справок<br>за ${monthName} ${year} года</div>
-    <table>
-      <thead><tr><th>№ п/п</th><th>Номер справки</th><th>Дата выдачи</th><th>Студент</th><th>Группа</th><th>Реестровые номера достижений</th><th>Кем выдана</th></tr></thead>
-      <tbody>
-        ${data.map((entry, idx) => `
-          <tr>
-            <td style="text-align:center">${idx+1}</td>
-            <td>${esc(entry.cert_number)}</td>
-            <td style="white-space:nowrap">${new Date(entry.created_at).toLocaleDateString('ru')}</td>
-            <td>${esc(entry.student_name)}</td>
-            <td>${esc(entry.student_group || '—')}</td>
-            <td>${entry.achievement_numbers ? entry.achievement_numbers.join(', ') : '—'}</td>
-            <td>${esc(entry.generated_by === 'nevda.asa' ? 'Невдах А.С., секретарь СНО ФЭМ' : (entry.generated_by || '—'))}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-    <div class="footer">Всего выдано справок: ${data.length}<br>Дата формирования: ${dateStr}</div>
-  </div>
-  </body></html>`);
-  win.document.close();
+async function loadCertLog() {
+  const tbody = document.getElementById('cert-log-tbody');
+  const countEl = document.getElementById('cert-log-count');
+  if(!tbody) return;
+  try {
+    const { data, error } = await sb.from('cert_log').select('*').order('issued_at', { ascending: false });
+    if(error) throw error;
+    if(countEl) countEl.textContent = `Всего справок: ${(data||[]).length}`;
+    if(!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="padding:24px;text-align:center;color:var(--text-lighter);">Справки ещё не выдавались</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map(r => {
+      const dt = r.issued_at ? new Date(r.issued_at).toLocaleDateString('ru-RU') : '—';
+      return `<tr>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);font-weight:700;color:var(--accent);">${escapeHtml(r.cert_number||'—')}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);">${escapeHtml(r.author_fio||'—')}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);max-width:220px;font-size:12px;color:var(--text-light);">${escapeHtml(r.achievement_title||'—')}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);font-family:var(--font-serif);font-size:13px;">${escapeHtml(r.registry_number||'—')}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);">${escapeHtml(r.issued_by_fio||'—')}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-light);">${escapeHtml(r.issued_by_position||'—')}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);white-space:nowrap;font-size:13px;">${dt}</td>
+      </tr>`;
+    }).join('');
+  } catch(e) {
+    if(tbody) tbody.innerHTML = `<tr><td colspan="7" style="padding:24px;text-align:center;color:var(--accent);">Ошибка: ${escapeHtml(e.message)}<br><small>Создайте таблицу cert_log в Supabase (SQL ниже)</small></td></tr>`;
+    if(countEl) countEl.textContent = 'Ошибка загрузки';
+  }
 }
-
-// ========== НОВАЯ ФУНКЦИЯ: ОТЧЁТ ПО ГОДАМ ==========
-function updateReportYearSelect() {
-  const select = document.getElementById('report-year');
-  if (!select) return;
-  const yearsSet = new Set();
-  achievements.forEach(a => { if (a.year) yearsSet.add(a.year); });
-  const years = Array.from(yearsSet).sort().reverse();
-  select.innerHTML = '<option value="">-- все годы --</option>' + years.map(y => `<option value="${y}">${y}</option>`).join('');
-  // предпросмотр при изменении
-  select.onchange = () => {
-    const year = select.value;
-    let filtered = achievements;
-    if (year) filtered = achievements.filter(a => a.year === year);
-    document.getElementById('report-preview').innerHTML = `<span style="color:var(--accent);">Найдено достижений: ${filtered.length}</span>`;
-  };
-  select.onchange();
-}
-
-async function generateYearReportPDF() {
-  const year = document.getElementById('report-year').value;
-  let filtered = achievements;
-  if (year) filtered = achievements.filter(a => a.year === year);
-  if (filtered.length === 0) {
-    alert('Нет достижений за выбранный период');
+async function saveAchievement() {
+  const { data, error } = await sb.from('achievements').insert({ dept:document.getElementById('a-dept').value, type:document.getElementById('a-type').value, title:document.getElementById('a-title').value, description:document.getElementById('a-desc').value, author:document.getElementById('a-author').value, year:document.getElementById('a-year').value, supervisor:document.getElementById('a-sup').value||null, link:document.getElementById('a-link').value||null }).select();
+  
+  if (error) {
+    alert('Ошибка при добавлении: ' + error.message);
     return;
   }
+  
+  if (data && data.length > 0) {
+    const newId = data[0].id;
+    const registryNum = `ФЭМ-${document.getElementById('a-year').value}-${String(newId).padStart(4, '0')}`;
+    alert(`✅ Достижение добавлено!\nНомер в реестре: ${registryNum}`);
+  } else {
+    alert('✅ Достижение добавлено!');
+  }
+  
+  await fetchAchievements(); 
+  renderHome();
+}
+function updateReportYears() { const years = [...new Set(achievements.map(a=>a.year))].sort().reverse(); document.getElementById('report-year').innerHTML = years.map(y=>`<option value="${y}">${y}</option>`).join(''); }
+function generateYearReportPDF() {
+  const year = document.getElementById('report-year').value;
+  const filtered = achievements.filter(a=>a.year===year);
+  const el = document.createElement('div'); el.innerHTML = `<h1>Годовой отчёт ${year}</h1><p>Всего: ${filtered.length}</p><table border="1" cellpadding="10"><tr><th>Название</th><th>Тип</th><th>Автор</th><th>Кафедра</th></tr>${filtered.map(a=>`<tr><td>${escapeHtml(a.title)}</td><td>${a.type}</td><td>${escapeHtml(a.author)}</td><td>${DEPT_SHORT[a.dept]}</td></tr>`).join('')}</table>`;
+  html2pdf().set({ margin:10, filename:`report_${year}.pdf` }).from(el).save();
+}
+async function addUser() {
+  if(currentUser?.role !== 'admin') { alert('Только администратор может добавлять пользователей.'); return; }
+  const login = document.getElementById('u-login').value.trim();
+  const pass = document.getElementById('u-pass').value;
+  const fio = document.getElementById('u-fio').value.trim();
+  const position = document.getElementById('u-position').value.trim();
+  const role = document.getElementById('u-role').value;
+  if(!login || !pass || !fio) { alert('Заполните логин, пароль и ФИО.'); return; }
+  const { error } = await sb.from('cms_users').insert({ login, password: pass, role, fio, position });
+  if(error) { alert('Ошибка: ' + error.message); return; }
+  alert('Пользователь добавлен!');
+  document.getElementById('u-login').value = '';
+  document.getElementById('u-pass').value = '';
+  document.getElementById('u-fio').value = '';
+  document.getElementById('u-position').value = '';
+  loadUsersList();
+}
 
-  // Статистика по типам и кафедрам
-  const typeStats = {};
-  const deptStats = {};
-  filtered.forEach(a => {
-    typeStats[a.type] = (typeStats[a.type] || 0) + 1;
-    deptStats[a.dept] = (deptStats[a.dept] || 0) + 1;
-  });
+async function loadUsersList() {
+  const wrap = document.getElementById('users-list-wrap');
+  if(!wrap) return;
+  wrap.innerHTML = '<p style="color:var(--text-light);font-size:13px;">Загрузка...</p>';
+  const { data, error } = await sb.from('cms_users').select('id,login,fio,position,role');
+  if(error || !data) { wrap.innerHTML = '<p style="color:var(--accent);">Ошибка загрузки</p>'; return; }
+  wrap.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+    <thead><tr>
+      <th style="text-align:left;padding:8px;border-bottom:2px solid var(--border);color:var(--primary);">Логин</th>
+      <th style="text-align:left;padding:8px;border-bottom:2px solid var(--border);color:var(--primary);">ФИО</th>
+      <th style="text-align:left;padding:8px;border-bottom:2px solid var(--border);color:var(--primary);">Должность</th>
+      <th style="text-align:left;padding:8px;border-bottom:2px solid var(--border);color:var(--primary);">Роль</th>
+    </tr></thead>
+    <tbody>${data.map(u => `<tr>
+      <td style="padding:8px;border-bottom:1px solid var(--border);">${escapeHtml(u.login)}</td>
+      <td style="padding:8px;border-bottom:1px solid var(--border);">${escapeHtml(u.fio||'—')}</td>
+      <td style="padding:8px;border-bottom:1px solid var(--border);color:var(--text-light);">${escapeHtml(u.position||'—')}</td>
+      <td style="padding:8px;border-bottom:1px solid var(--border);"><span style="background:${u.role==='admin'?'var(--accent-pale)':'#e3f2fd'};color:${u.role==='admin'?'var(--accent)':'#1565c0'};padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">${u.role==='admin'?'Администратор':'Редактор'}</span></td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
-  // Формируем HTML для отчёта
-  const today = new Date();
-  const dateStr = today.toLocaleDateString('ru');
-  const title = year ? `Годовой отчёт за ${year} год` : 'Отчёт по всем достижениям';
+// ========== ИСПРАВЛЕННАЯ ГЕНЕРАЦИЯ СПРАВКИ (PDF НЕ ПУСТОЙ) ==========
+function getCertNumber(a) {
+  // Stable 5-digit random number seeded from achievement id
+  const seed = a.id || a.unique_number || Math.floor(Math.random() * 90000);
+  const num = (((seed * 1103515245 + 12345) & 0x7fffffff) % 90000) + 10000;
+  return String(num);
+}
+function getIssueDate() { return new Date().toLocaleDateString('ru-RU'); }
 
-  let tableRows = '';
-  filtered.forEach((a, idx) => {
-    tableRows += `
-      <tr>
-        <td style="text-align:center">${idx+1}</td>
-        <td style="text-align:center">${esc(a.unique_number || '—')}</td>
-        <td>${esc(a.title)}</td>
-        <td>${esc(a.type)}</td>
-        <td>${esc(a.author)}</td>
-        <td>${esc(a.supervisor || '—')}</td>
-        <td>${DEPT_SHORT[a.dept] || a.dept}</td>
-        <td style="text-align:center">${esc(a.year)}</td>
-      </tr>
-    `;
-  });
+function openCertModal() {
+  if(!currentCertAchievement) { alert('Ошибка: выберите достижение'); return; }
+  const a = currentCertAchievement;
+  // Populate author genitive
+  document.getElementById('cert-author-gen').value = '';
+  document.getElementById('cert-sup-gen').value = '';
+  document.getElementById('cert-sup-post').value = '';
+  document.getElementById('cert-author-orig').textContent = a.author || '—';
+  document.getElementById('cert-sup-orig').textContent = a.supervisor || '—';
+  // Reset to form step
+  document.getElementById('cert-form-step').style.display = '';
+  document.getElementById('cert-preview-step').style.display = 'none';
+  document.getElementById('cert-modal').classList.add('active');
+}
 
-  const statsHTML = `
-    <div style="margin-bottom: 10mm;">
-      <h3>Статистика</h3>
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 5mm;">
-        <tr><td style="width: 50%;"><strong>Всего достижений:</strong></td><td>${filtered.length}</td></tr>
-        <tr><td><strong>По типам:</strong></td><td>${Object.entries(typeStats).map(([t,c]) => `${t} — ${c}`).join(', ')}</td></tr>
-        <tr><td><strong>По кафедрам:</strong></td><td>${Object.entries(deptStats).map(([d,c]) => `${DEPT_SHORT[d]} — ${c}`).join(', ')}</td></tr>
-      </table>
+function previewCert() {
+  const authorGen = document.getElementById('cert-author-gen').value.trim();
+  const supGen = document.getElementById('cert-sup-gen').value.trim();
+  const supPost = document.getElementById('cert-sup-post').value.trim();
+  if(!authorGen || !supGen || !supPost) {
+    alert('Пожалуйста, заполните все три поля.');
+    return;
+  }
+  const a = currentCertAchievement;
+  const certNum = getCertNumber(a);
+  const issueDate = getIssueDate();
+  const registryNum = a.unique_number || certNum;
+
+  const previewHTML = `<div style="padding:28px 20px; background:#fff; border:1px solid #ddd; border-radius:8px; font-family:'Times New Roman',serif; font-size:13px; line-height:1.7; color:#000;">
+    <div style="text-align:center; border-bottom:1px solid #999; padding-bottom:10px; margin-bottom:16px;">
+      <div style="font-size:11px; font-weight:600; text-transform:uppercase;">УО «Белорусский государственный экономический университет»</div>
+      <div style="font-size:10px;">Факультет экономики и менеджмента</div>
     </div>
-  `;
+    <div style="text-align:center; font-weight:bold; font-size:15px; margin:16px 0 8px;">СПРАВКА № ${certNum}</div>
+    <div style="text-align:right; margin-bottom:18px; font-size:12px;">Дата: ${issueDate}</div>
+    <div style="margin-bottom:8px;"><strong>ВЫДАНА:</strong> ${escapeHtml(authorGen)}</div>
+    <div style="margin:16px 0; text-align:justify;">
+      Настоящая справка подтверждает, что студент(ка) <strong>${escapeHtml(a.author)}</strong>
+      действительно выполнил(а) научную работу <strong>«${escapeHtml(a.title)}»</strong>
+      под научным руководством <strong>${escapeHtml(supPost)}</strong> <strong>${escapeHtml(supGen)}</strong>.
+      Данная работа зарегистрирована в реестре научных достижений студентов
+      факультета экономики и менеджмента БГЭУ за реестровым номером <strong>${registryNum}</strong>.
+    </div>
+    <div style="margin-top:44px; display:flex; justify-content:space-between; align-items:flex-end; font-size:12px;">
+      <div>Заместитель декана факультета<br>экономики и менеджмента</div>
+      <div style="text-align:center;">М.П.<div style="border-top:1px solid #000; margin-top:28px; width:110px;"></div><div style="font-size:9px;">(подпись)</div></div>
+      <div><strong>Гулина О.В.</strong></div>
+    </div>
+  </div>`;
+  document.getElementById('cert-preview-body').innerHTML = previewHTML;
+  document.getElementById('cert-form-step').style.display = 'none';
+  document.getElementById('cert-preview-step').style.display = '';
+}
+function closeCertModal() { document.getElementById('cert-modal').classList.remove('active'); }
 
-  const tempDiv = document.createElement('div');
-  tempDiv.style.position = 'absolute';
-  tempDiv.style.left = '-9999px';
-  tempDiv.style.top = '-9999px';
-  tempDiv.style.width = '210mm';
-  tempDiv.style.backgroundColor = 'white';
-  document.body.appendChild(tempDiv);
+async function downloadCertPDF() {
+  const a = currentCertAchievement;
+  if(!a) { alert('Нет данных для справки'); return; }
+  const certNum = getCertNumber(a);
+  const issueDate = getIssueDate();
+  const registryNum = a.unique_number || certNum;
+  const safeTitle = escapeHtml(a.title);
+  // Use genitive fields if filled, fallback to registry values
+  const safeAuthor = escapeHtml(document.getElementById('cert-author-gen')?.value.trim() || a.author);
+  const safeSupervisor = escapeHtml(document.getElementById('cert-sup-gen')?.value.trim() || a.supervisor || '—');
+  const safeSupPost = escapeHtml(document.getElementById('cert-sup-post')?.value.trim() || '');
 
-  tempDiv.innerHTML = `
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font-family: 'Times New Roman', Times, serif; background: white; width: 210mm; }
-      .report-page {
-        width: 210mm;
-        padding: 15mm 20mm;
-        background: white;
-      }
-      h1 { font-size: 18pt; text-align: center; margin-bottom: 5mm; }
-      h2 { font-size: 14pt; text-align: center; margin-bottom: 5mm; font-weight: normal; }
-      .header { text-align: center; margin-bottom: 10mm; border-bottom: 2px solid #000; padding-bottom: 5mm; }
-      .org-name { font-size: 12pt; font-weight: bold; text-transform: uppercase; }
-      .faculty-name { font-size: 11pt; margin-bottom: 3mm; }
-      .date-info { text-align: right; font-size: 10pt; margin-bottom: 5mm; }
-      table { width: 100%; border-collapse: collapse; margin-top: 5mm; font-size: 9pt; }
-      th, td { border: 1px solid #000; padding: 3mm; vertical-align: top; }
-      th { background: #f0f0f0; text-align: center; font-weight: bold; }
-      .footer { margin-top: 15mm; text-align: right; font-size: 10pt; border-top: 1px solid #000; padding-top: 5mm; }
-      .signature { margin-top: 10mm; display: flex; justify-content: space-between; align-items: flex-end; }
-      .signature-line { width: 50mm; border-bottom: 1px solid #000; margin-top: 10mm; }
-      .site-link { text-align: center; font-size: 8pt; margin-top: 10mm; color: #555; }
-      @page { size: A4; margin: 0; }
-    </style>
-    <div class="report-page">
-      <div class="header">
-        <div class="org-name">МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ</div>
-        <div class="org-name">БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ ЭКОНОМИЧЕСКИЙ УНИВЕРСИТЕТ</div>
-        <div class="faculty-name">Факультет экономики и менеджмента</div>
-        <div class="faculty-name">Реестр научных достижений студентов</div>
+  const printWindow = window.open('', '_blank', 'width=800,height=900');
+  printWindow.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Справка ${certNum}</title>
+  <style>
+    @page { size: A4; margin: 20mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12pt;
+      line-height: 1.7;
+      color: #000;
+      background: #fff;
+    }
+    .wrap { max-width: 170mm; margin: 0 auto; padding: 10mm; }
+    .header { text-align: center; border-bottom: 1.5px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+    .header .univ { font-size: 11pt; font-weight: bold; text-transform: uppercase; }
+    .header .faculty { font-size: 10pt; margin-top: 4px; }
+    .cert-number { text-align: center; font-weight: bold; font-size: 15pt; margin: 24px 0 8px; letter-spacing: 0.5px; }
+    .date { text-align: right; margin-bottom: 24px; font-size: 11pt; }
+    .issued { margin-bottom: 20px; font-size: 11pt; }
+    .content { margin: 20px 0 40px; text-align: justify; font-size: 12pt; }
+    .signatures { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 60px; font-size: 11pt; }
+    .sig-left { flex: 1; }
+    .sig-center { flex: 1; text-align: center; }
+    .sig-right { flex: 1; text-align: right; }
+    .stamp-line { border-top: 1px solid #000; width: 120px; margin: 35px auto 4px; }
+    .stamp-label { font-size: 8pt; color: #555; }
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .print-btn { display: none !important; }
+    }
+    .print-btn {
+      display: block; margin: 20px auto 0; padding: 10px 32px;
+      background: #003366; color: white; border: none;
+      font-size: 13pt; font-family: Arial, sans-serif;
+      cursor: pointer; border-radius: 4px;
+    }
+    .print-btn:hover { background: #004d99; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="univ">УО «Белорусский государственный экономический университет»</div>
+    <div class="faculty">Факультет экономики и менеджмента</div>
+  </div>
+  <div class="cert-number">СПРАВКА № ${certNum}</div>
+  <div class="date">Дата выдачи: ${issueDate}</div>
+  <div class="issued"><strong>ВЫДАНА:</strong> ${safeAuthor}</div>
+  <div class="content">
+    Настоящая справка подтверждает, что студент(ка) <strong>${escapeHtml(a.author)}</strong>
+    действительно выполнил(а) научную работу <strong>«${safeTitle}»</strong>
+    под научным руководством ${safeSupPost ? `<strong>${safeSupPost}</strong> ` : ''}<strong>${safeSupervisor}</strong>.
+    Данная работа зарегистрирована в реестре научных достижений студентов
+    факультета экономики и менеджмента БГЭУ за реестровым номером <strong>${registryNum}</strong>.
+  </div>
+  <div class="signatures">
+    <div class="sig-left">Заместитель декана<br>факультета экономики<br>и менеджмента</div>
+    <div class="sig-center">
+      М.П.
+      <div class="stamp-line"></div>
+      <div class="stamp-label">(подпись)</div>
+    </div>
+    <div class="sig-right"><strong>Гулина О.В.</strong></div>
+  </div>
+</div>
+<button class="print-btn no-print" onclick="window.print()">🖨 Печать / Сохранить PDF</button>
+</body>
+</html>`);
+  printWindow.document.close();
+  printWindow.focus();
+  setTimeout(() => { printWindow.print(); }, 600);
+
+  // Сохранить запись в журнал справок
+  try {
+    await sb.from('cert_log').insert({
+      cert_number: certNum,
+      achievement_id: a.id,
+      achievement_title: a.title,
+      author_fio: document.getElementById('cert-author-gen')?.value.trim() || a.author,
+      registry_number: registryNum,
+      issued_by_fio: currentUser?.fio || currentUser?.login || '—',
+      issued_by_position: currentUser?.position || '—',
+      issued_at: new Date().toISOString()
+    });
+    // Обновить журнал если он открыт
+    if(document.getElementById('cms-cert-log') && !document.getElementById('cms-cert-log').classList.contains('hidden')) {
+      loadCertLog();
+    }
+  } catch(e) { console.warn('Не удалось сохранить в журнал справок:', e.message); }
+}
+
+
+// ========== APPLICATIONS (ЗАЯВКИ) ==========
+let pendingAppNumber = null;
+let lastSubmittedApp = null;
+
+let achievementBlockCount = 0;
+
+function generateAppNumber() {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const rand = Math.floor(Math.random() * 9000) + 1000;
+  pendingAppNumber = `${rand}${day}`;
+  const badge = document.querySelector('.app-number-badge');
+  if(badge) badge.textContent = '🔖 Номер заявки: ' + pendingAppNumber;
+}
+
+function addAchievementBlock(data) {
+  achievementBlockCount++;
+  const idx = achievementBlockCount;
+  const container = document.getElementById('achievements-list');
+  const div = document.createElement('div');
+  div.className = 'achievement-block';
+  div.id = `ach-block-${idx}`;
+  div.innerHTML = `
+    <div class="block-header">
+      <span class="block-num">Достижение #<span class="ach-num-label">${idx}</span></span>
+      ${idx > 1 ? `<button class="remove-btn" onclick="removeAchievementBlock(${idx})" title="Удалить">✕</button>` : ''}
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Тип достижения *</label>
+        <select class="form-control ach-type">
+          <option>Конференция</option><option>Олимпиада</option>
+          <option>Публикация</option><option>Грант / Конкурс</option>
+        </select>
       </div>
-      <div class="date-info">Дата формирования: ${dateStr}</div>
-      <h1>${title}</h1>
-      ${statsHTML}
-      <h2>Детальный перечень достижений</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>№</th><th>Реестровый номер</th><th>Название</th><th>Тип</th><th>Автор(ы)</th><th>Руководитель</th><th>Кафедра</th><th>Год</th>
-          </tr>
-        </thead>
-        <tbody>${tableRows}</tbody>
-      </table>
-      <div class="signature">
-        <div></div>
-        <div style="text-align:center;">
-          <div class="signature-line"></div>
-          <div><strong>Гулина О.В.</strong><br>Заместитель декана по учебной работе</div>
-          <div style="font-size:8pt;">М.П.</div>
-        </div>
-      </div>
-      <div class="site-link">
-        Электронный Реестр научных достижений студентов ФЭМ БГЭУ<br>
-        <a href="https://reestr-fem-nauka.netlify.app/">https://reestr-fem-nauka.netlify.app/</a>
+      <div class="form-group">
+        <label>Кафедра (студента, выполневшего работу) *</label>
+        <select class="form-control ach-dept">
+          <option value="epp">Экономики промышленных предприятий</option>
+          <option value="apk">Экономики АПК и природопользования</option>
+          <option value="ou">Организации и управления</option>
+          <option value="negu">Национальной экономики и государственного управления</option>
+        </select>
       </div>
     </div>
-  `;
+    <div class="form-group">
+      <label>Название работы / мероприятия *</label>
+      <input class="form-control ach-title" type="text" placeholder="Полное название">
+    </div>
+    <div class="form-group">
+      <label>Описание *</label>
+      <textarea class="form-control ach-desc" style="min-height:80px;" placeholder="Результат, место проведения, награда и т.д."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Научный руководитель *</label>
+        <input class="form-control ach-supervisor" type="text" placeholder="ФИО руководителя">
+      </div>
+      <div class="form-group">
+        <label>Год *</label>
+        <input class="form-control ach-year" type="text" placeholder="2025"
+          value="${data && data.year ? data.year : new Date().getFullYear()}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Ссылка на материалы (необязательно)</label>
+      <input class="form-control ach-link" type="url" placeholder="https://...">
+    </div>`;
 
-  const element = tempDiv.querySelector('.report-page');
-  const opt = {
-    margin: [0, 0, 0, 0],
-    filename: `Report_${year || 'all'}_${today.toISOString().slice(0,10)}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
+  if(data) {
+    div.querySelector('.ach-type').value = data.type || 'Конференция';
+    div.querySelector('.ach-dept').value = data.dept || 'epp';
+    div.querySelector('.ach-title').value = data.title || '';
+    div.querySelector('.ach-desc').value = data.description || '';
+    div.querySelector('.ach-supervisor').value = data.supervisor || '';
+    div.querySelector('.ach-link').value = data.link || '';
+  }
+
+  container.appendChild(div);
+  renumberAchievementBlocks();
+}
+
+function removeAchievementBlock(idx) {
+  const el = document.getElementById(`ach-block-${idx}`);
+  if(el) el.remove();
+  renumberAchievementBlocks();
+}
+
+function renumberAchievementBlocks() {
+  const blocks = document.querySelectorAll('.achievement-block');
+  blocks.forEach((b, i) => {
+    const lbl = b.querySelector('.ach-num-label');
+    if(lbl) lbl.textContent = i + 1;
+    const removeBtn = b.querySelector('.remove-btn');
+    if(blocks.length === 1) {
+      if(removeBtn) removeBtn.remove();
+    } else if(!removeBtn && i > 0) {
+      const header = b.querySelector('.block-header');
+      const id = b.id.replace('ach-block-','');
+      const btn = document.createElement('button');
+      btn.className = 'remove-btn';
+      btn.title = 'Удалить';
+      btn.textContent = '✕';
+      btn.onclick = () => removeAchievementBlock(id);
+      header.appendChild(btn);
+    }
+  });
+}
+
+function collectAchievements() {
+  const blocks = document.querySelectorAll('.achievement-block');
+  const items = [];
+  for(const b of blocks) {
+    const title = b.querySelector('.ach-title').value.trim();
+    const desc = b.querySelector('.ach-desc').value.trim();
+    const supervisor = b.querySelector('.ach-supervisor').value.trim();
+    const year = b.querySelector('.ach-year').value.trim();
+    if(!title || !desc || !supervisor || !year) return null;
+    items.push({
+      type: b.querySelector('.ach-type').value,
+      dept: b.querySelector('.ach-dept').value,
+      title, description: desc, supervisor, year,
+      link: b.querySelector('.ach-link').value.trim() || null
+    });
+  }
+  return items;
+}
+
+async function fetchApplications() {
+  try {
+    const { data, error } = await sb.from('applications').select('*').order('created_at', { ascending: false });
+    if(error) throw error;
+    applications = data || [];
+  } catch(e) {
+    console.warn('applications table may not exist:', e.message);
+    applications = [];
+  }
+  return applications;
+}
+
+async function submitApplication() {
+  const fio = document.getElementById('app-fio').value.trim();
+  const group = document.getElementById('app-group').value.trim();
+  if(!fio || !group) { alert('Пожалуйста, укажите ФИО и группу.'); return; }
+
+  const items = collectAchievements();
+  if(!items) { alert('Пожалуйста, заполните все обязательные поля во всех достижениях.'); return; }
+  if(items.length === 0) { alert('Добавьте хотя бы одно достижение.'); return; }
+
+  if(!pendingAppNumber) generateAppNumber();
+  const appNum = pendingAppNumber;
+  const appDate = new Date().toISOString();
+
+  // Save one record per achievement, all with same app_number
+  const records = items.map(item => ({
+    app_number: appNum, fio, group_name: group,
+    dept: item.dept, type: item.type, title: item.title,
+    description: item.description, supervisor: item.supervisor,
+    year: item.year, link: item.link,
+    status: 'new', created_at: appDate
+  }));
+
+  try {
+    const { error } = await sb.from('applications').insert(records);
+    if(error) throw error;
+  } catch(e) {
+    console.warn('Could not save to DB:', e.message);
+  }
+
+  lastSubmittedApp = { app_number: appNum, fio, group_name: group, items, created_at: appDate };
+  document.getElementById('app-success-num').textContent = appNum;
+  document.getElementById('app-num-for-print').textContent = appNum;
+  document.getElementById('app-form-inner').style.display = 'none';
+  document.getElementById('app-success-block').classList.add('show');
+}
+
+function resetApplicationForm() {
+  document.getElementById('app-fio').value = '';
+  document.getElementById('app-group').value = '';
+  document.getElementById('achievements-list').innerHTML = '';
+  achievementBlockCount = 0;
+  addAchievementBlock();
+  document.getElementById('app-success-block').classList.remove('show');
+  document.getElementById('app-form-inner').style.display = '';
+  generateAppNumber();
+  lastSubmittedApp = null;
+}
+
+function printApplicationPDF() {
+  if(!lastSubmittedApp) return;
+  const a = lastSubmittedApp;
+  const issueDate = new Date(a.created_at).toLocaleDateString('ru-RU');
+  const DEPT_NAMES_FULL = {
+    epp: 'Экономики промышленных предприятий',
+    apk: 'Экономики АПК и природопользования',
+    ou: 'Организации и управления',
+    negu: 'Национальной экономики и государственного управления'
   };
 
-  html2pdf().set(opt).from(element).save().then(() => {
-    document.body.removeChild(tempDiv);
-    alert('Отчёт успешно сформирован!');
-  }).catch(err => {
-    console.error(err);
-    alert('Ошибка при формировании отчёта');
-    if (tempDiv && tempDiv.parentNode) document.body.removeChild(tempDiv);
+  const w = window.open('', '_blank', 'width=820,height=1000');
+  w.document.write(`<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Заявление ${a.app_number}</title>
+<style>
+  @page { size: A4; margin: 25mm 20mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.75; color: #000; background: #fff; }
+  .wrap { max-width: 165mm; margin: 0 auto; }
+  .to-block { text-align: right; margin-bottom: 32px; font-size: 11pt; line-height: 1.35; }
+  .title { text-align: center; font-weight: bold; font-size: 14pt; margin: 24px 0 20px; }
+  .app-num { text-align: center; font-size: 12pt; margin-bottom: 28px; color: #333; }
+  .body-text { text-align: justify; margin-bottom: 16px; font-size: 12pt; }
+  .details-table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 11pt; }
+  .details-table td { padding: 7px 12px; border: 1px solid #999; }
+  .details-table td:first-child { font-weight: bold; width: 45%; background: #f5f5f5; }
+  .attachment { margin: 20px 0; font-size: 11pt; }
+  .attachment p { margin-bottom: 4px; }
+  .signatures { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 48px; font-size: 11pt; }
+  .sig-block { text-align: center; }
+  .sig-line { border-top: 1px solid #000; width: 140px; margin: 32px auto 4px; }
+  .sig-label { font-size: 9pt; color: #555; }
+  .student-sign { margin-top: 40px; font-size: 11pt; }
+  .student-sig-row { display: flex; gap: 48px; align-items: flex-end; margin-top: 8px; }
+  .student-sig-row .sig-line { margin: 32px 0 4px; }
+  @media print { .print-btn { display: none !important; } }
+  .print-btn {
+    display: block; margin: 24px auto 0; padding: 10px 32px;
+    background: #003366; color: white; border: none; font-size: 13pt;
+    font-family: Arial, sans-serif; cursor: pointer; border-radius: 4px;
+  }
+</style></head><body>
+<div class="wrap">
+  <div class="to-block">
+    Заместителю декана<br>факультета экономики и менеджмента<br>
+    УО «БГЭУ»<br><strong>Гулиной О.В.</strong><br><br>
+    от студента(ки) группы <strong>${escHtml(a.group_name)}</strong><br>
+    <strong>${escHtml(a.fio)}</strong>
+  </div>
+
+  <div class="title">ЗАЯВЛЕНИЕ</div>
+  <div class="app-num">№ ${a.app_number} от ${issueDate}</div>
+
+  <p class="body-text">
+    Прошу зарегистрировать мои научные достижения в реестре научных достижений
+    студентов факультета экономики и менеджмента БГЭУ. Сведения о достижениях приведены ниже.
+  </p>
+
+  ${(a.items || [a]).map((item, i) => {
+    const dn = DEPT_NAMES_FULL[item.dept] || item.dept || '';
+    return `<div style="margin-bottom:20px;">
+      <div style="font-weight:bold; font-size:11pt; margin-bottom:6px; color:#003366;">Достижение ${i+1}</div>
+      <table class="details-table">
+        <tr><td>Тип достижения</td><td>${escHtml(item.type)}</td></tr>
+        <tr><td>Название работы / мероприятия</td><td>${escHtml(item.title)}</td></tr>
+        <tr><td>Описание</td><td>${escHtml(item.description)}</td></tr>
+        <tr><td>Кафедра</td><td>${escHtml(dn)}</td></tr>
+        <tr><td>Научный руководитель</td><td>${escHtml(item.supervisor)}</td></tr>
+        <tr><td>Год</td><td>${escHtml(item.year)}</td></tr>
+        ${item.link ? `<tr><td>Ссылка на материалы</td><td>${escHtml(item.link)}</td></tr>` : ''}
+      </table></div>`;
+  }).join('')}
+
+  <div class="attachment">
+    <p><strong>Прилагаю подтверждающие документы по каждому достижению:</strong></p>
+    ${(a.items || [a]).map((item, i) => `<p>${i+1}. ${escHtml(item.title)} — _____ л.</p>`).join('')}
+  </div>
+
+  <div class="student-sign">
+    <div class="student-sig-row">
+      <div>
+        <div class="sig-line" style="width:160px;"></div>
+        <div class="sig-label">(подпись студента)</div>
+      </div>
+      <div>
+        <div class="sig-line" style="width:200px;"></div>
+        <div class="sig-label">(расшифровка: ${escHtml(a.fio)})</div>
+      </div>
+      <div>
+        <div class="sig-line" style="width:120px;"></div>
+        <div class="sig-label">(дата)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signatures" style="margin-top:48px;">
+    <div>Принято:<br>
+      <div style="display:flex; gap:32px; align-items:flex-end; margin-top:8px;">
+        <div><div class="sig-line" style="width:140px; margin:32px 0 4px;"></div><div class="sig-label">(подпись)</div></div>
+        <div><div class="sig-line" style="width:120px; margin:32px 0 4px;"></div><div class="sig-label">(дата)</div></div>
+      </div>
+    </div>
+    <div class="sig-block">
+      М.П.
+      <div class="sig-line"></div>
+      <div class="sig-label">Деканат ФЭМ БГЭУ</div>
+    </div>
+  </div>
+</div>
+<button class="print-btn" onclick="window.print()">🖨 Печать / Сохранить PDF</button>
+</body></html>`);
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 500);
+}
+
+function escHtml(s) { if(!s) return ''; return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+// ===== CMS: render applications table =====
+function renderApplicationsTable() {
+  const filterStatus = document.getElementById('apps-filter-status')?.value || '';
+
+  // Group by app_number
+  const grouped = {};
+  applications.forEach(a => {
+    if(!grouped[a.app_number]) grouped[a.app_number] = [];
+    grouped[a.app_number].push(a);
   });
-}
 
-// ----- Вспомогательные функции -----
-function cancelEdit() {
-  document.getElementById('a-edit-id').value = '';
-  ['a-title','a-desc','a-author','a-year','a-sup','a-link','a-unique-num'].forEach(id => { document.getElementById(id).value = ''; });
-  document.getElementById('a-dept').value = 'epp';
-  document.getElementById('a-type').value = 'Конференция';
-  document.getElementById('a-form-title').textContent = 'Добавить достижение';
-  document.getElementById('a-num-group').classList.add('hidden');
-}
+  let groups = Object.values(grouped);
+  if(filterStatus) groups = groups.filter(g => g[0].status === filterStatus);
 
-function renderDeptInfoPanels() {
-  document.getElementById('dept-info-panels').innerHTML = Object.keys(DEPT_NAMES).map(key => {
-    const info = deptInfo[key] || {};
-    return `<div class="cms-panel" style="margin-bottom:20px">
-      <h3>${esc(DEPT_NAMES[key])}</h3>
-      <div class="form-group"><label>Краткое описание (для карточки)</label><input class="form-control" id="di-short-${key}" value="${esc(info.short_desc||'')}"></div>
-      <div class="form-group"><label>Полное описание</label><textarea class="form-control" id="di-desc-${key}" rows="4">${esc(info.description||'')}</textarea></div>
-      <div class="form-group"><label>Заведующий кафедрой</label><input class="form-control" id="di-head-${key}" value="${esc(info.head_name||'')}"></div>
-      <div class="form-group"><label>О СНИЛ</label><textarea class="form-control" id="di-snil-${key}" rows="3">${esc(info.snilDesc||'')}</textarea></div>
-      <div class="form-actions"><button class="btn btn-primary" onclick="saveDeptInfo('${key}')">Сохранить</button></div>
-      <div class="alert alert-ok hidden" id="di-ok-${key}">✓ Сохранено</div>
-    </div>`;
+  document.getElementById('apps-count').textContent = `Заявок: ${Object.keys(grouped).length}, показано: ${groups.length}`;
+
+  const statusLabel = { new:'Новое', review:'На рассмотрении', approved:'Одобрено', rejected:'Отклонено' };
+  const statusClass = { new:'status-new', review:'status-review', approved:'status-approved', rejected:'status-rejected' };
+
+  document.getElementById('apps-tbody').innerHTML = groups.map(group => {
+    const first = group[0];
+    const appNum = first.app_number;
+    const dt = new Date(first.created_at).toLocaleDateString('ru-RU');
+    const status = first.status;
+    const safeKey = appNum.replace(/[^a-zA-Z0-9]/g, '_');
+
+    const detailRows = group.map((a, i) => `
+      <div style="margin-bottom:14px; padding:14px; background:white; border:1px solid var(--border); border-radius:6px;">
+        <div style="font-weight:700; color:var(--primary); margin-bottom:8px; font-size:14px;">Достижение ${i+1}: ${escapeHtml(a.title)}</div>
+        <div class="app-detail-grid">
+          <div class="app-detail-item"><label>Тип</label><span>${escapeHtml(a.type)}</span></div>
+          <div class="app-detail-item"><label>Кафедра</label><span>${escapeHtml(DEPT_NAMES[a.dept]||a.dept)}</span></div>
+          <div class="app-detail-item" style="grid-column:1/-1"><label>Описание</label><span>${escapeHtml(a.description)}</span></div>
+          <div class="app-detail-item"><label>Руководитель</label><span>${escapeHtml(a.supervisor)}</span></div>
+          <div class="app-detail-item"><label>Год</label><span>${escapeHtml(a.year)}</span></div>
+          ${a.link ? `<div class="app-detail-item" style="grid-column:1/-1"><label>Ссылка</label><a href="${escapeHtml(a.link)}" target="_blank">${escapeHtml(a.link)}</a></div>` : ''}
+        </div>
+        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn" style="font-size:12px;padding:6px 14px;background:#e3f2fd;color:#1565c0;border:1px solid #90caf9;" onclick="openEditAppModal(${a.id})">✏️ Изменить</button>
+          <button class="btn btn-primary" style="font-size:12px;padding:6px 14px;" onclick="addAchievementFromApp(${a.id})">✅ Добавить в реестр</button>
+        </div>
+      </div>`).join('');
+
+    return `<tr style="cursor:pointer;" onclick="toggleAppRow('${safeKey}')">
+      <td style="text-align:center; color:var(--text-lighter);">▶</td>
+      <td><strong style="color:var(--accent);">${escapeHtml(appNum)}</strong></td>
+      <td>${escapeHtml(first.fio)}</td>
+      <td>${escapeHtml(first.group_name)}</td>
+      <td style="color:var(--text-light); font-size:12px;">${group.length} достиж.</td>
+      <td style="white-space:nowrap;">${dt}</td>
+      <td><span class="app-status-badge ${statusClass[status]||'status-new'}">${statusLabel[status]||status}</span></td>
+      <td onclick="event.stopPropagation()">
+        <select style="font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:4px;background:white;" onchange="updateAppStatusByNumber('${appNum}', this.value)">
+          <option value="new" ${status==='new'?'selected':''}>Новое</option>
+          <option value="review" ${status==='review'?'selected':''}>Рассмотрение</option>
+          <option value="approved" ${status==='approved'?'selected':''}>Одобрено</option>
+          <option value="rejected" ${status==='rejected'?'selected':''}>Отклонено</option>
+        </select>
+      </td>
+    </tr>
+    <tr class="app-row-expand" id="app-expand-${safeKey}">
+      <td colspan="8">
+        <div style="padding:4px 0 8px; font-size:12px; color:var(--text-light); margin-bottom:8px;">
+          <strong>Студент:</strong> ${escapeHtml(first.fio)} · <strong>Группа:</strong> ${escapeHtml(first.group_name)} · <strong>Дата:</strong> ${dt}
+        </div>
+        ${detailRows}
+      </td>
+    </tr>`;
   }).join('');
 }
 
-async function saveDeptInfo(key) {
-  const obj = { dept_key: key, short_desc: document.getElementById(`di-short-${key}`).value, description: document.getElementById(`di-desc-${key}`).value, head_name: document.getElementById(`di-head-${key}`).value, snilDesc: document.getElementById(`di-snil-${key}`).value };
-  await sb.from('dept_info').upsert(obj, { onConflict: 'dept_key' });
-  deptInfo[key] = obj; showA(`di-ok-${key}`);
+function toggleAppRow(key) {
+  const el = document.getElementById('app-expand-' + key);
+  if(el) el.classList.toggle('open');
 }
 
-async function addUser() {
-  const login = document.getElementById('u-login').value.trim();
-  const pass = document.getElementById('u-pass').value;
-  const role = document.getElementById('u-role').value;
-  if (!login || !pass) return;
-  const { error } = await sb.from('cms_users').insert({ login, password: pass, role });
-  if (error) { showA('u-err'); return; }
-  document.getElementById('u-login').value = '';
-  document.getElementById('u-pass').value = '';
-  showA('u-ok');
-  const { data } = await sb.from('cms_users').select('*').order('created_at');
-  users = data || []; renderUsersTable();
+async function updateAppStatusByNumber(appNum, status) {
+  try {
+    await sb.from('applications').update({ status }).eq('app_number', appNum);
+    await fetchApplications();
+    renderApplicationsTable();
+  } catch(e) { console.error(e); }
 }
 
-async function deleteUser(id, login) {
-  if (login === currentUser.login) { alert('Нельзя удалить текущего пользователя'); return; }
-  if (!confirm(`Удалить пользователя "${login}"?`)) return;
-  await sb.from('cms_users').delete().eq('id', id);
-  const { data } = await sb.from('cms_users').select('*').order('created_at');
-  users = data || []; renderUsersTable();
+// ===== EDIT APPLICATION MODAL =====
+let editingAppId = null;
+
+function openEditAppModal(id) {
+  const a = applications.find(x => x.id === id);
+  if(!a) return;
+  editingAppId = id;
+
+  document.getElementById('edit-app-id').value = id;
+  document.getElementById('edit-app-type').value = a.type || 'Конференция';
+  document.getElementById('edit-app-dept').value = a.dept || 'epp';
+  document.getElementById('edit-app-title').value = a.title || '';
+  document.getElementById('edit-app-desc').value = a.description || '';
+  document.getElementById('edit-app-supervisor').value = a.supervisor || '';
+  document.getElementById('edit-app-year').value = a.year || '';
+  document.getElementById('edit-app-link').value = a.link || '';
+  document.getElementById('edit-app-fio').value = a.fio || '';
+  document.getElementById('edit-app-group').value = a.group_name || '';
+
+  document.getElementById('edit-app-modal').style.display = 'flex';
 }
 
-async function renderUsersTable() {
-  if (currentUser?.role !== 'admin') {
-    document.getElementById('u-tbody').innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>Только для администраторов</p></div></td></tr>`;
-    return;
-  }
-  const { data } = await sb.from('cms_users').select('*').order('created_at');
-  users = data || [];
-  document.getElementById('u-tbody').innerHTML = users.map(u => `<tr>
-    <td class="mono">${esc(u.login)}</td>
-    <td><span class="tag ${u.role==='admin'?'gold':'blue'}">${u.role}</span></td>
-    <td style="color:var(--muted);font-size:12px">${u.created_at ? new Date(u.created_at).toLocaleDateString('ru') : '—'}</td>
-    <td>${u.login !== currentUser.login
-      ? `<button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id},'${esc(u.login)}')">Удалить</button>`
-      : '<span style="font-family:var(--mono);font-size:10px;color:var(--muted)">текущий</span>'
-    }</td>
-  </tr>`).join('');
+function closeEditAppModal() {
+  document.getElementById('edit-app-modal').style.display = 'none';
+  editingAppId = null;
 }
 
-function openAchievementModal(id) {
-  const a = achievements.find(x => x.id === id);
-  if (!a) return;
-  const tc = TYPE_CLASS[a.type] || '';
-  document.getElementById('modal-tags').innerHTML = `
-    ${a.unique_number ? `<span class="unique-num-badge">${esc(a.unique_number)}</span>` : ''}
-    <span class="tag ${tc}">${esc(a.type)}</span>
-    <span class="tag">${DEPT_SHORT[a.dept] || a.dept}</span>`;
-  document.getElementById('modal-title').textContent = a.title;
-  document.getElementById('modal-meta').innerHTML = `
-    <div class="modal-meta-item"><span class="modal-meta-label">Год:</span><span>${esc(a.year)}</span></div>
-    <div class="modal-meta-item"><span class="modal-meta-label">Кафедра:</span><span>${DEPT_NAMES[a.dept] || a.dept}</span></div>`;
-  let body = '';
-  if (a.description) body += `<div class="modal-section"><div class="modal-section-title">Описание</div><div class="modal-section-content">${esc(a.description)}</div></div>`;
-  if (a.author) body += `<div class="modal-section"><div class="modal-section-title">Автор</div><div class="modal-section-content">${esc(a.author)}</div></div>`;
-  if (a.supervisor) body += `<div class="modal-section"><div class="modal-section-title">Научный руководитель</div><div class="modal-section-content">${esc(a.supervisor)}</div></div>`;
-  if (a.link) body += `<div class="modal-section"><div class="modal-section-title">Материалы</div><a class="modal-link" href="${esc(a.link)}" target="_blank" rel="noopener">Открыть вложение</a></div>`;
-  document.getElementById('modal-body').innerHTML = body;
-  document.getElementById('modal-actions-container').innerHTML = ''; // убрали кнопку справки
-  document.getElementById('achievement-modal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeAchievementModal(event) {
-  if (event && event.target !== event.currentTarget && !event.target.classList.contains('modal-close')) return;
-  document.getElementById('achievement-modal').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAchievementModal(); });
-
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function slug(s) { return s.replace(/[^a-zA-Zа-яА-Я0-9]/g,'_'); }
-function emptyState(msg) { return `<div class="empty-state"><div class="icon">📂</div><p>${msg}</p></div>`; }
-function showA(id) { const el = document.getElementById(id); if (!el) return; el.classList.remove('hidden'); setTimeout(() => el.classList.add('hidden'), 3500); }
-
-async function init() {
-  const ok = initSupabase();
-  if (!ok || SUPABASE_URL.includes('ВАША')) {
-    document.getElementById('loading').innerHTML = `<div style="text-align:center;max-width:480px;padding:24px"><div style="font-family:var(--mono);font-size:14px;color:var(--accent);margin-bottom:16px">⚠ Требуется настройка</div><p style="color:var(--muted);font-size:14px;line-height:1.7">Вставьте ваши данные Supabase в начало файла.</p></div>`;
+async function saveEditApp() {
+  const id = editingAppId;
+  if(!id) return;
+  const updates = {
+    type: document.getElementById('edit-app-type').value,
+    dept: document.getElementById('edit-app-dept').value,
+    title: document.getElementById('edit-app-title').value.trim(),
+    description: document.getElementById('edit-app-desc').value.trim(),
+    supervisor: document.getElementById('edit-app-supervisor').value.trim(),
+    year: document.getElementById('edit-app-year').value.trim(),
+    link: document.getElementById('edit-app-link').value.trim() || null,
+    fio: document.getElementById('edit-app-fio').value.trim(),
+    group_name: document.getElementById('edit-app-group').value.trim(),
+  };
+  if(!updates.title || !updates.description || !updates.supervisor || !updates.year || !updates.fio) {
+    alert('Пожалуйста, заполните все обязательные поля.');
     return;
   }
   try {
-    await fetchAll();
-    document.getElementById('loading').classList.add('hidden');
-    startRealtime();
-    renderHome();
-  } catch(e) {
-    document.getElementById('loading').innerHTML = `<div style="text-align:center;padding:24px"><div style="font-family:var(--mono);color:var(--danger);margin-bottom:12px">Ошибка подключения</div><p style="color:var(--muted);font-size:13px">${e.message}</p></div>`;
+    const { error } = await sb.from('applications').update(updates).eq('id', id);
+    if(error) throw error;
+    closeEditAppModal();
+    await fetchApplications();
+    renderApplicationsTable();
+    alert('✅ Данные успешно изменены!');
+  } catch(e) { alert('Ошибка: ' + e.message); }
+}
+
+async function addAchievementFromApp(id) {
+  const a = applications.find(x => x.id === id);
+  if(!a) return;
+  if(!confirm(`Добавить достижение "${a.title}" в реестр?`)) return;
+  try {
+    const { data, error } = await sb.from('achievements').insert({
+      dept: a.dept, type: a.type, title: a.title,
+      description: a.description, author: a.fio,
+      year: a.year, supervisor: a.supervisor, link: a.link || null
+    }).select();
+    
+    if (error) throw error;
+
+    // Берём unique_number который присвоил триггер БД
+    const realNum = (data && data.length > 0 && data[0].unique_number)
+      ? data[0].unique_number
+      : (data && data.length > 0 ? `ФЭМ-${a.year}-${String(data[0].id).padStart(4,'0')}` : '—');
+    
+    await sb.from('applications').update({ status: 'approved' }).eq('id', id);
+    await fetchAchievements();
+    await fetchApplications();
+    renderApplicationsTable();
+
+    // Закрыть раскрытую строку заявки
+    const safeKey = a.app_number.replace(/[^a-zA-Z0-9]/g, '_');
+    const expandRow = document.getElementById('app-expand-' + safeKey);
+    if (expandRow) expandRow.classList.remove('open');
+
+    alert(`✅ Достижение добавлено в реестр!\nНомер в реестре: ${realNum}`);
+  } catch(e) { alert('Ошибка: ' + e.message); }
+}
+
+
+document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') { closeAchievementModal(); closeCertModal(); closeEditAppModal(); } });
+
+// ========== ПРОВЕРКА СТАТУСА ЗАЯВКИ ==========
+async function checkApplicationStatus() {
+  const appNum = document.getElementById('status-check-number').value.trim().toUpperCase();
+  if (!appNum) {
+    alert('Пожалуйста, введите номер заявки');
+    return;
+  }
+
+  try {
+    const { data, error } = await sb.from('applications')
+      .select('*')
+      .eq('app_number', appNum);
+    
+    if (error) throw error;
+    
+    const resultDiv = document.getElementById('status-result');
+    const contentDiv = document.getElementById('status-content');
+    
+    if (!data || data.length === 0) {
+      contentDiv.innerHTML = `
+        <div style="background:var(--accent-pale); border:1px solid var(--accent); border-radius:var(--radius); padding:16px; color:var(--accent);">
+          ❌ Заявка с номером <strong>${escapeHtml(appNum)}</strong> не найдена.
+          <br>Пожалуйста, проверьте правильность введённого номера заявки.
+        </div>
+      `;
+      resultDiv.style.display = 'block';
+      return;
+    }
+
+    const app = data[0];
+    const statusMap = {
+      'new': { icon: '📋', text: 'Новое', color: '#FFA500' },
+      'review': { icon: '⏳', text: 'На рассмотрении', color: '#2196F3' },
+      'approved': { icon: '✅', text: 'Одобрено', color: '#4CAF50' },
+      'rejected': { icon: '❌', text: 'Отклонено', color: '#d32f2f' }
+    };
+    const status = statusMap[app.status] || { icon: '❓', text: app.status, color: '#999' };
+    
+    const createdDate = new Date(app.created_at).toLocaleDateString('ru-RU');
+    
+    let html = `
+      <div style="background:${status.color}20; border:2px solid ${status.color}; border-radius:var(--radius-lg); padding:20px;">
+        <div style="font-size:32px; margin-bottom:12px;">${status.icon}</div>
+        <div style="font-size:18px; font-weight:bold; margin-bottom:8px; color:var(--primary);">
+          Статус: <span style="color:${status.color};">${status.text}</span>
+        </div>
+        <div style="margin:16px 0; font-size:14px; line-height:1.8; color:var(--text);">
+          <div><strong>Номер заявки:</strong> ${escapeHtml(appNum)}</div>
+          <div><strong>ФИО студента:</strong> ${escapeHtml(app.fio)}</div>
+          <div><strong>Группа:</strong> ${escapeHtml(app.group_name)}</div>
+          <div><strong>Дата подачи:</strong> ${createdDate}</div>
+          <div style="margin-top:12px;"><strong>Достижения в заявке:</strong></div>
+          <ul style="margin-left:20px; margin-top:8px;">
+    `;
+    
+    const uniqueTypes = [...new Set(data.map(d => d.type))];
+    const uniqueTitles = [...new Set(data.map(d => d.title))];
+    
+    uniqueTitles.forEach(title => {
+      html += `<li>${escapeHtml(title)}</li>`;
+    });
+    
+    html += `
+          </ul>
+        </div>
+    `;
+    
+    if (app.status === 'approved') {
+      html += `
+        <div style="background:var(--accent-pale); border:1px solid var(--accent); border-radius:var(--radius); padding:12px; margin-top:16px; font-size:13px; color:var(--accent);">
+          ✅ Ваша заявка одобрена! Достижения добавлены в реестр.
+        </div>
+      `;
+    } else if (app.status === 'rejected') {
+      html += `
+        <div style="background:#ffebee; border:1px solid #c62828; border-radius:var(--radius); padding:12px; margin-top:16px; font-size:13px; color:#c62828;">
+          ❌ Ваша заявка отклонена. Пожалуйста, обратитесь к активу СНО ФЭМ для уточнения причины.
+        </div>
+      `;
+    } else if (app.status === 'new' || app.status === 'review') {
+      html += `
+        <div style="background:#e3f2fd; border:1px solid #1976d2; border-radius:var(--radius); padding:12px; margin-top:16px; font-size:13px; color:#1976d2;">
+          ⏳ Ваша заявка обрабатывается. Пожалуйста, дождитесь решения в течение 3–5 рабочих дней.
+        </div>
+      `;
+    }
+    
+    html += `</div>`;
+    
+    contentDiv.innerHTML = html;
+    resultDiv.style.display = 'block';
+    
+  } catch (error) {
+    console.error('Error checking status:', error);
+    document.getElementById('status-content').innerHTML = `
+      <div style="background:var(--accent-pale); border:1px solid var(--accent); border-radius:var(--radius); padding:16px; color:var(--accent);">
+        ⚠️ Ошибка при проверке статуса. Пожалуйста, попробуйте позже.
+      </div>
+    `;
+    document.getElementById('status-result').style.display = 'block';
   }
 }
 
+
+
+// ========== CMS: ФОРМИРОВАНИЕ СПРАВКИ ==========
+let ciSelectedAchievement = null;
+
+function ciFilterAchievements() {
+  const q = (document.getElementById('ci-search')?.value || '').trim().toLowerCase();
+  const wrap = document.getElementById('ci-results');
+  if(!wrap) return;
+  const list = q ? achievements.filter(a =>
+    (a.title||'').toLowerCase().includes(q) ||
+    (a.author||'').toLowerCase().includes(q) ||
+    String(a.unique_number||'').toLowerCase().includes(q)
+  ) : achievements.slice(0, 20);
+  if(!list.length) {
+    wrap.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-lighter); font-size:13px;">Ничего не найдено</div>';
+    return;
+  }
+  wrap.innerHTML = list.map(a => `
+    <div onclick="ciSelectAchievement(${a.id})" style="padding:12px 16px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.15s;"
+      onmouseover="this.style.background='rgba(0,51,102,0.04)'" onmouseout="this.style.background=''"
+      class="ci-row">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:3px;">
+        <span style="background:var(--accent-pale); color:var(--accent); font-size:10px; font-weight:700; padding:2px 7px; border-radius:3px;">${escapeHtml(a.type)}</span>
+        ${a.unique_number ? `<span style="font-family:var(--font-serif); font-size:12px; font-weight:700; color:var(--accent);">№ ${a.unique_number}</span>` : ''}
+      </div>
+      <div style="font-size:13px; font-weight:600; color:var(--primary);">${escapeHtml(a.title)}</div>
+      <div style="font-size:12px; color:var(--text-light); margin-top:2px;">${escapeHtml(a.author)} · ${a.year}</div>
+    </div>`).join('');
+}
+
+function ciSelectAchievement(id) {
+  const a = achievements.find(x => x.id === id);
+  if(!a) return;
+  ciSelectedAchievement = a;
+  document.getElementById('ci-selected-title').textContent = a.title;
+  document.getElementById('ci-selected-author').textContent = a.author || '—';
+  document.getElementById('ci-selected-num').textContent = a.unique_number || '—';
+  document.getElementById('ci-selected-info').style.display = '';
+  // populate form hints
+  document.getElementById('ci-author-orig').textContent = a.author || '—';
+  document.getElementById('ci-sup-orig').textContent = a.supervisor || '—';
+  document.getElementById('ci-author-gen').value = '';
+  document.getElementById('ci-sup-gen').value = '';
+  document.getElementById('ci-sup-post').value = '';
+  document.getElementById('ci-form-panel').style.display = '';
+  document.getElementById('ci-preview-panel').style.display = 'none';
+}
+
+function ciPreviewCert() {
+  const authorGen = document.getElementById('ci-author-gen').value.trim();
+  const supGen = document.getElementById('ci-sup-gen').value.trim();
+  const supPost = document.getElementById('ci-sup-post').value.trim();
+  if(!authorGen || !supGen || !supPost) { alert('Пожалуйста, заполните все три поля.'); return; }
+  const a = ciSelectedAchievement;
+  const certNum = getCertNumber(a);
+  const issueDate = getIssueDate();
+  const registryNum = a.unique_number || certNum;
+  const previewHTML = `<div style="padding:28px 20px; background:#fff; font-family:'Times New Roman',serif; font-size:13px; line-height:1.7; color:#000;">
+    <div style="text-align:center; border-bottom:1px solid #999; padding-bottom:10px; margin-bottom:16px;">
+      <div style="font-size:11px; font-weight:600; text-transform:uppercase;">УО «Белорусский государственный экономический университет»</div>
+      <div style="font-size:10px;">Факультет экономики и менеджмента</div>
+    </div>
+    <div style="text-align:center; font-weight:bold; font-size:15px; margin:16px 0 8px;">СПРАВКА № ${certNum}</div>
+    <div style="text-align:right; margin-bottom:18px; font-size:12px;">Дата: ${issueDate}</div>
+    <div style="margin-bottom:8px;"><strong>ВЫДАНА:</strong> ${escapeHtml(authorGen)}</div>
+    <div style="margin:16px 0; text-align:justify;">
+      Настоящая справка подтверждает, что студент(ка) <strong>${escapeHtml(a.author)}</strong>
+      действительно выполнил(а) научную работу <strong>«${escapeHtml(a.title)}»</strong>
+      под научным руководством <strong>${escapeHtml(supPost)}</strong> <strong>${escapeHtml(supGen)}</strong>.
+      Данная работа зарегистрирована в реестре научных достижений студентов
+      факультета экономики и менеджмента БГЭУ за реестровым номером <strong>${registryNum}</strong>.
+    </div>
+    <div style="margin-top:44px; display:flex; justify-content:space-between; align-items:flex-end; font-size:12px;">
+      <div>Заместитель декана факультета<br>экономики и менеджмента</div>
+      <div style="text-align:center;">М.П.<div style="border-top:1px solid #000; margin-top:28px; width:110px;"></div><div style="font-size:9px;">(подпись)</div></div>
+      <div><strong>Гулина О.В.</strong></div>
+    </div>
+  </div>`;
+  document.getElementById('ci-preview-body').innerHTML = previewHTML;
+  document.getElementById('ci-form-panel').style.display = 'none';
+  document.getElementById('ci-preview-panel').style.display = '';
+}
+
+async function ciDownloadPDF() {
+  const a = ciSelectedAchievement;
+  if(!a) { alert('Не выбрано достижение'); return; }
+  const authorGen = document.getElementById('ci-author-gen').value.trim();
+  const supGen = document.getElementById('ci-sup-gen').value.trim();
+  const supPost = document.getElementById('ci-sup-post').value.trim();
+  const certNum = getCertNumber(a);
+  const issueDate = getIssueDate();
+  const registryNum = a.unique_number || certNum;
+  const safeTitle = escapeHtml(a.title);
+  const safeAuthor = escapeHtml(authorGen || a.author);
+  const safeSupervisor = escapeHtml(supGen || a.supervisor || '—');
+  const safeSupPost = escapeHtml(supPost);
+  const printWindow = window.open('', '_blank', 'width=800,height=900');
+  printWindow.document.write(`<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Справка ${certNum}</title>
+<style>
+  @page { size: A4; margin: 20mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.7; color: #000; background: #fff; }
+  .wrap { max-width: 170mm; margin: 0 auto; padding: 10mm; }
+  .header { text-align: center; border-bottom: 1.5px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+  .header .univ { font-size: 11pt; font-weight: bold; text-transform: uppercase; }
+  .header .faculty { font-size: 10pt; margin-top: 4px; }
+  .cert-number { text-align: center; font-weight: bold; font-size: 15pt; margin: 24px 0 8px; }
+  .date { text-align: right; margin-bottom: 24px; font-size: 11pt; }
+  .issued { margin-bottom: 20px; font-size: 11pt; }
+  .content { margin: 20px 0 40px; text-align: justify; font-size: 12pt; }
+  .signatures { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 60px; font-size: 11pt; }
+  .stamp-line { border-top: 1px solid #000; width: 120px; margin: 35px auto 4px; }
+  .stamp-label { font-size: 8pt; color: #555; }
+  @media print { .print-btn { display: none !important; } }
+  .print-btn { display: block; margin: 20px auto 0; padding: 10px 32px; background: #003366; color: white; border: none; font-size: 13pt; cursor: pointer; border-radius: 4px; }
+</style></head><body>
+<div class="wrap">
+  <div class="header">
+    <div class="univ">УО «Белорусский государственный экономический университет»</div>
+    <div class="faculty">Факультет экономики и менеджмента</div>
+  </div>
+  <div class="cert-number">СПРАВКА № ${certNum}</div>
+  <div class="date">Дата выдачи: ${issueDate}</div>
+  <div class="issued"><strong>ВЫДАНА:</strong> ${safeAuthor}</div>
+  <div class="content">
+    Настоящая справка подтверждает, что студент(ка) <strong>${escapeHtml(a.author)}</strong>
+    действительно выполнил(а) научную работу <strong>«${safeTitle}»</strong>
+    под научным руководством ${safeSupPost ? `<strong>${safeSupPost}</strong> ` : ''}<strong>${safeSupervisor}</strong>.
+    Данная работа зарегистрирована в реестре научных достижений студентов
+    факультета экономики и менеджмента БГЭУ за реестровым номером <strong>${registryNum}</strong>.
+  </div>
+  <div class="signatures">
+    <div>Заместитель декана<br>факультета экономики<br>и менеджмента</div>
+    <div style="text-align:center;">М.П.<div class="stamp-line"></div><div class="stamp-label">(подпись)</div></div>
+    <div><strong>Гулина О.В.</strong></div>
+  </div>
+</div>
+<button class="print-btn" onclick="window.print()">🖨 Печать / Сохранить PDF</button>
+</body></html>`);
+  printWindow.document.close();
+  printWindow.focus();
+  setTimeout(() => { printWindow.print(); }, 600);
+  // Записать в журнал
+  try {
+    await sb.from('cert_log').insert({
+      cert_number: certNum,
+      achievement_id: a.id,
+      achievement_title: a.title,
+      author_fio: authorGen || a.author,
+      registry_number: String(registryNum),
+      issued_by_fio: currentUser?.fio || currentUser?.login || '—',
+      issued_by_position: currentUser?.position || '—',
+      issued_at: new Date().toISOString()
+    });
+    alert(`✅ Справка № ${certNum} сформирована и записана в журнал.`);
+  } catch(e) { console.warn('Не удалось записать в журнал:', e.message); }
+}
+
+// Expose functions to global scope for inline onclick handlers
+window.nav = nav;
+window.toggleMobileNav = toggleMobileNav;
+window.closeMobileNav = closeMobileNav;
+window.handleAuthBtn = handleAuthBtn;
+window.doLogin = doLogin;
+window.doLogout = doLogout;
+window.cmsSection = cmsSection;
+window.saveAchievement = saveAchievement;
+window.openAchievementModal = openAchievementModal;
+window.closeAchievementModal = closeAchievementModal;
+window.openCertModal = openCertModal;
+window.closeCertModal = closeCertModal;
+window.previewCert = previewCert;
+window.downloadCertPDF = downloadCertPDF;
+window.performSearch = performSearch;
+window.generateYearReportPDF = generateYearReportPDF;
+window.addUser = addUser;
+window.loadUsersList = loadUsersList;
+window.loadCertLog = loadCertLog;
+window.renderCertLogSection = renderCertLogSection;
+window.submitApplication = submitApplication;
+window.resetApplicationForm = resetApplicationForm;
+window.addAchievementBlock = addAchievementBlock;
+window.removeAchievementBlock = removeAchievementBlock;
+window.checkApplicationStatus = checkApplicationStatus;
+window.renderApplicationsTable = renderApplicationsTable;
+window.fetchApplications = fetchApplications;
+window.toggleAppRow = toggleAppRow;
+window.updateAppStatusByNumber = updateAppStatusByNumber;
+window.addAchievementFromApp = addAchievementFromApp;
+window.openEditAppModal = openEditAppModal;
+window.closeEditAppModal = closeEditAppModal;
+window.saveEditApp = saveEditApp;
+
 init();
 </script>
+
+<!-- ===== EDIT APPLICATION MODAL ===== -->
+<div id="edit-app-modal" style="display:none; position:fixed; inset:0; z-index:2000; background:rgba(0,0,0,0.6); backdrop-filter:blur(2px); align-items:center; justify-content:center; padding:20px;">
+  <div style="background:var(--surface); border-radius:var(--radius-lg); max-width:680px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:var(--shadow-lg); border-top:4px solid var(--primary);">
+    <div style="padding:28px 32px 0; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:20px; margin-bottom:24px;">
+      <div>
+        <h2 style="font-family:var(--font-serif); font-size:22px; color:var(--primary); margin-bottom:4px;">✏️ Изменить данные заявки</h2>
+        <p style="font-size:13px; color:var(--text-light);">Отредактируйте данные перед добавлением в реестр</p>
+      </div>
+      <button onclick="closeEditAppModal()" style="background:var(--bg); border:1.5px solid var(--border); border-radius:50%; width:36px; height:36px; cursor:pointer; font-size:20px; color:var(--text-light); display:flex; align-items:center; justify-content:center;">&times;</button>
+    </div>
+    <input type="hidden" id="edit-app-id">
+    <div style="padding:0 32px 32px;">
+      <div style="background:var(--accent-pale); border:1px solid rgba(211,47,47,0.2); border-radius:var(--radius); padding:12px 16px; font-size:13px; color:var(--accent); margin-bottom:24px;">
+        ℹ️ Изменения сохраняются в базе данных заявки. Для внесения в реестр нажмите «Добавить в реестр».
+      </div>
+
+      <div style="font-weight:700; color:var(--primary); font-size:13px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px;">Данные студента</div>
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label>ФИО студента *</label>
+          <input class="form-control" type="text" id="edit-app-fio" placeholder="Иванов Иван Иванович">
+        </div>
+        <div class="form-group">
+          <label>Группа *</label>
+          <input class="form-control" type="text" id="edit-app-group" placeholder="ЭУП-3">
+        </div>
+      </div>
+
+      <div style="font-weight:700; color:var(--primary); font-size:13px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px; margin-top:8px;">Данные достижения</div>
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label>Тип достижения *</label>
+          <select class="form-control" id="edit-app-type">
+            <option>Конференция</option>
+            <option>Олимпиада</option>
+            <option>Публикация</option>
+            <option>Грант / Конкурс</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Кафедра *</label>
+          <select class="form-control" id="edit-app-dept">
+            <option value="epp">Экономики промышленных предприятий</option>
+            <option value="apk">Экономики АПК и природопользования</option>
+            <option value="ou">Организации и управления</option>
+            <option value="negu">Национальной экономики и государственного управления</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label>Название работы / мероприятия *</label>
+        <input class="form-control" type="text" id="edit-app-title" placeholder="Полное название">
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label>Описание *</label>
+        <textarea class="form-control" id="edit-app-desc" style="min-height:80px;" placeholder="Результат, место, награда и т.д."></textarea>
+      </div>
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label>Научный руководитель *</label>
+          <input class="form-control" type="text" id="edit-app-supervisor" placeholder="ФИО руководителя">
+        </div>
+        <div class="form-group">
+          <label>Год *</label>
+          <input class="form-control" type="text" id="edit-app-year" placeholder="2025">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:28px;">
+        <label>Ссылка на материалы (необязательно)</label>
+        <input class="form-control" type="url" id="edit-app-link" placeholder="https://...">
+      </div>
+
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-primary" onclick="saveEditApp()" style="flex:1;">💾 Сохранить изменения</button>
+        <button class="btn" onclick="closeEditAppModal()" style="flex:0.5; background:var(--border); color:var(--text);">Отмена</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
